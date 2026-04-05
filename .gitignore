@@ -1,0 +1,5 @@
+# JetBrains IDEs
+.idea
+
+# ReFS metadata
+desktop.ini
