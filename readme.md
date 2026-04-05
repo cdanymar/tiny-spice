@@ -28,12 +28,12 @@ Nodal Analysis (MNA)**.
 
 ### Modified Nodal Analysis (MNA)
 
+> This model of MNA assumes only ideal sources and linear elements; I don't want to
+> explain the details of the method unless they are part of my project.
+
 MNA extends the node voltage method by introducing additional unknowns for currents 
 through voltage-defined elements and branches (not meshes nor loops!). The resulting 
 system is solved as:
-
-> This model of MNA assumes only ideal sources and linear elements; I don't want to 
-> explain the details of the method unless they are part of my project.
 
 $$
 \begin{bmatrix}
@@ -190,10 +190,10 @@ $$
 
 ## Todo
 
-- [x] Write readme [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)
-- [ ] Implement basic components
-  - [ ] Resistor
-  - [ ] Voltage source
+- [x] ~~Write readme [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)~~
+- [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)~~
+  - [x] ~~Resistor~~
+  - [x] ~~Voltage source~~
 - [ ] Implement more complex components
   - [ ] Inductor
   - [ ] Capacitor
