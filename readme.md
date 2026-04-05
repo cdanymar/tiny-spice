@@ -190,7 +190,7 @@ $$
 
 ## Todo
 
-- [x] Write readme [`0da1c61`](https://github.com/cdanymar/tiny-spice/commit/0da1c6103dd302678ebf525bd06387d9ac21a2bd)
+- [x] Write readme [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)
 - [ ] Implement basic components
   - [ ] Resistor
   - [ ] Voltage source
