@@ -1,4 +1,4 @@
-# Tiny SPICE
+# tinySPICE
 
 This is my final Matlab project for the Computer Programming 1 (BPA-PP1) course.
 
@@ -65,7 +65,7 @@ Where:
 
 ### Component Stamps
 
-Each element applies a local stamp to the global system (`@Device.applyStamp()`). $in$ 
+Each element applies a local stamp to the global system (`device.applyStamp()`). $in$ 
 and $out$ refer to the nodes to which a component is connected to.
 
 #### Resistor
@@ -117,9 +117,9 @@ $$
 
 $$
 \begin{array}
-    @{\hspace{1em}} &
+    {\hspace{1em}} &
     \begin{matrix}
-        \text{in} & \text{out} & \text{k}
+        \text{in} & \text{out} && \text{k} &&&
     \end{matrix} \\
     \begin{matrix}
         \text{in} \\
@@ -190,7 +190,7 @@ $$
 
 ## Todo
 
-- [x] ~~Write readme [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)~~
+- [x] ~~Write readme~~ [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)
 - [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)~~
   - [x] ~~Resistor~~
   - [x] ~~Voltage source~~
