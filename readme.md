@@ -24,8 +24,6 @@ for computers  because handling voltage sources in NVM or current sources in MCM
 requires manual source transformations. To avoid this, **Tiny SPICE** uses **Modified 
 Nodal Analysis (MNA)**.
 
----
-
 ### Modified Nodal Analysis (MNA)
 
 > This model of MNA assumes only ideal sources and linear elements; I don't want to
@@ -60,8 +58,6 @@ Where:
 * $\mathbf{j}$ is the vector of unknown branch currents.
 * $\mathbf{i}$ is the vector of independent current sources.
 * $\mathbf{u}$ is the vector of independent voltage sources.
-
----
 
 ### Component Stamps
 

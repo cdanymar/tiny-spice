@@ -19,23 +19,45 @@ classdef (Sealed) Resistor < Device
 
     methods (Access = {?Device, ?Circuit})
         function [matA, matZ] = applyStamp(device, matA, matZ)
-            conductance = 1 / device.Resistance;
+            arguments
+                device (1, 1) Resistor
+                matA   (:, :) double {mustBeNumeric, mustBeFinite}
+                matZ   (:, :) double {mustBeNumeric, mustBeFinite}
+            end
+
+            g = 1 / device.Resistance;
 
             in  = device.EntryNode;
             out = device.ExitNode;
 
             if (in ~= 0)
-                matA(in, in) = matA(in, in) + conductance;
+                matA(in, in) = matA(in, in) + g;
             end
 
             if (out ~= 0)
-                matA(out, out) = matA(out, out) + conductance;
+                matA(out, out) = matA(out, out) + g;
             end
 
             if (in ~= 0) && (out ~= 0)
-                matA(in, out) = matA(in, out) - conductance;
-                matA(out, in) = matA(out, in) - conductance;
+                matA(in, out) = matA(in, out) - g;
+                matA(out, in) = matA(out, in) - g;
             end
+        end
+
+        function [U, I, Z] = getStates(resistor, result)
+            arguments
+                resistor (1, 1) Resistor
+                result   (:, 1) double {mustBeNumeric, mustBeFinite}
+            end
+
+            values = [0; result];
+
+            vIn  = values(resistor.EntryNode + 1);
+            vOut = values(resistor.ExitNode + 1);
+
+            U = vIn - vOut;
+            I = U / resistor.Resistance;
+            Z = resistor.Resistance;
         end
     end
 end

@@ -23,5 +23,6 @@ classdef (Abstract) Device < handle
 
     methods (Abstract, Access = {?Device, ?Circuit})
         [matA, matZ] = applyStamp(device, matA, matZ);
+        [U, I, Z]    = getStates(device, result);
     end
 end
