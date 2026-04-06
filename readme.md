@@ -68,6 +68,11 @@ Where:
 Each element applies a local stamp to the global system (`device.applyStamp()`). $in$ 
 and $out$ refer to the nodes to which a component is connected to.
 
+* $in$ and $out$ refer to connected nodes of a component.
+* $k$ is the new device index in the matrix for voltage-defined components.
+* the LHS matrix is the matrix of coefficients
+* the RHS matrix is the volt-ampere matrix of _sources_.
+
 #### Resistor
 $$
 \begin{array} 
@@ -191,7 +196,7 @@ $$
 ## Todo
 
 - [x] ~~Write readme~~ [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)
-- [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)~~
+- [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)
   - [x] ~~Resistor~~
   - [x] ~~Voltage source~~
 - [ ] Implement more complex components
