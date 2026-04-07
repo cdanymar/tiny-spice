@@ -16,3 +16,5 @@ circuit.insert(     Resistor('R2', 3, 0, 100000));
 
 states = circuit.solveMNA(CircuitContext(Frequency=50));
 disp(states);
+
+waitfor(gcf);

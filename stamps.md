@@ -66,6 +66,7 @@ $$
 #### Breaker
 
 **Closed state**
+
 $$
 \begin{array}{rcc}
     & \begin{matrix} \text{in} & \text{out} & \text{k} \end{matrix} & \\
@@ -76,8 +77,9 @@ $$
 $$
 
 **Open state**
+
 $$
-\begin{array}{rcc}
+\begin{array}{}
     & \begin{matrix} \text{in} & \text{out} & \text{k} \end{matrix} & \\
     \begin{matrix} \text{in} \\ \text{out} \\ \text{k} \end{matrix} &
     \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} &

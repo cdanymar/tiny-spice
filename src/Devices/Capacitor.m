@@ -44,7 +44,7 @@ classdef (Sealed) Capacitor < Device
             end
         end
 
-        function [U, I, Z] = getStates(inductor, result, circuit)
+        function [U, I, Z] = getStates(capacitor, result, circuit)
             arguments
                 capacitor (1, 1) Capacitor
                 result    (:, 1) double {mustBeNumeric, mustBeFinite}
