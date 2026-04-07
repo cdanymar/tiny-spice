@@ -195,12 +195,12 @@ $$
 - [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)
   - [x] ~~Resistor~~
   - [x] ~~Voltage source~~
-- [ ] Implement more complex components
-  - [ ] Inductor
-  - [ ] Capacitor
-  - [ ] Diode
-  - [ ] Current source
+- [x] ~~Implement more complex components~~ [`fd501d7`](https://github.com/cdanymar/tiny-spice/tree/fd501d7b1c9577022c966b3eeb60a16c55271be9)
+  - [x] Inductor
+  - [x] Capacitor
+  - [x] Current source
 - [ ] Implement more fun components
+  - [ ] Diode
   - [ ] Zener diode
   - [ ] Light-emitting diode
   - [ ] Thevenin's equivalent / component combination 
