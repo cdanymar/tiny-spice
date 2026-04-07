@@ -48,7 +48,7 @@ $$
 \end{bmatrix}
 $$
 
-Where:
+where:
 * $n$ is the number of reference nodes (total number without the ground).
 * $m$ is the number of voltage-defined branches.
 * $\mathbf{G}$ is the admittance of passive component.
@@ -59,135 +59,7 @@ Where:
 * $\mathbf{i}$ is the vector of independent current sources.
 * $\mathbf{u}$ is the vector of independent voltage sources.
 
-### Component Stamps
-
-Each element applies a local stamp to the global system (`device.applyStamp()`). $in$ 
-and $out$ refer to the nodes to which a component is connected to.
-
-* $in$ and $out$ refer to connected nodes of a component.
-* $k$ is the new device index in the matrix for voltage-defined components.
-* the LHS matrix is the matrix of coefficients
-* the RHS matrix is the volt-ampere matrix of _sources_.
-
-#### Resistor
-$$
-\begin{array} 
-    @{\hspace{1em}} & 
-    \begin{matrix} 
-        \text{in} & \text{out}
-    \end{matrix} \\
-    \begin{matrix}
-        \text{in} \\
-        \text{out} 
-    \end{matrix} & 
-    \begin{bmatrix}
-        g & -g \\ 
-        -g & g 
-    \end{bmatrix} &
-    \begin{bmatrix} 
-        0 \\ 
-        0 
-    \end{bmatrix}
-\end{array}
-$$
-
-#### Capacitor
-
-$$
-\begin{array} 
-    @{\hspace{1em}} &
-    \begin{matrix}
-        \text{in} & \text{out}
-    \end{matrix} \\
-    \begin{matrix}
-        \text{in} \\
-        \text{out}
-    \end{matrix} &
-    \begin{bmatrix}
-        j\omega C & -j\omega C \\
-        -j\omega C & j\omega C
-    \end{bmatrix} &
-    \begin{bmatrix}
-        0 \\
-        0
-    \end{bmatrix}
-\end{array}
-$$
-
-#### Inductor
-
-$$
-\begin{array}
-    {\hspace{1em}} &
-    \begin{matrix}
-        \text{in} & \text{out} && \text{k} &&&
-    \end{matrix} \\
-    \begin{matrix}
-        \text{in} \\
-        \text{out} \\
-        \text{k}
-    \end{matrix} &
-    \begin{bmatrix}
-        0 & 0 & 1 \\
-        0 & 0 & -1 \\
-        1 & -1 & -j\omega L
-    \end{bmatrix}
-    \begin{bmatrix}
-        0 \\
-        0 \\
-        0
-    \end{bmatrix}
-\end{array}
-$$
-
-#### Voltage Source
-
-$$
-\begin{array} 
-    @{\hspace{1em}} &
-    \begin{matrix}
-        \text{in} & \text{out} & \text{k}
-    \end{matrix} \\
-    \begin{matrix}
-        \text{in} \\
-        \text{out} \\
-        \text{k}
-    \end{matrix} &
-    \begin{bmatrix}
-        0 & 0 & 1 \\
-        0 & 0 & -1 \\
-        1 & -1 & 0
-    \end{bmatrix} &
-    \begin{bmatrix}
-        0 \\
-        0 \\
-        U
-    \end{bmatrix}
-\end{array}
-$$
-
-#### Current Source
-
-$$
-\begin{array} 
-    @{\hspace{1em}} &
-    \begin{matrix}
-        \text{in} & \text{out}
-    \end{matrix} \\
-    \begin{matrix}
-        \text{in} \\
-        \text{out}
-    \end{matrix} &
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & 0
-    \end{bmatrix} &
-    \begin{bmatrix}
-        -I \\
-        I
-    \end{bmatrix}
-\end{array}
-$$
+Individual stamps of all available components can be viewed [here](stamps.md).
 
 ## Todo
 
@@ -196,9 +68,9 @@ $$
   - [x] ~~Resistor~~
   - [x] ~~Voltage source~~
 - [x] ~~Implement more complex components~~ [`fd501d7`](https://github.com/cdanymar/tiny-spice/tree/fd501d7b1c9577022c966b3eeb60a16c55271be9)
-  - [x] Inductor
-  - [x] Capacitor
-  - [x] Current source
+  - [x] ~~Inductor~~
+  - [x] ~~Capacitor~~
+  - [x] ~~Current source~~
 - [ ] Implement more fun components
   - [ ] Diode
   - [ ] Zener diode
