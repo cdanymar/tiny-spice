@@ -4,16 +4,18 @@ classdef (Sealed) CurrentSource < Device
     end
 
     methods (Access = public)
-        function currentSource = CurrentSource(name, entryNode, exitNode, current)
+        function currentSource = CurrentSource(name, entryNode, exitNode, options)
             arguments
                 name      (1, 1) string
-                entryNode (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                current   (1, 1) double {mustBeNumeric, mustBeFinite}
+                entryNode (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+
+                options.Current (1, 1) double {mustBeReal, mustBeFinite}
+                options.Phase   (1, 1) double {mustBeReal, mustBeFinite} = 0
             end
 
             currentSource@Device(name, entryNode, exitNode);
-            currentSource.Current = current;
+            currentSource.Current = options.Current * exp(1i * deg2rad(options.Phase));
         end
     end
 
@@ -39,11 +41,11 @@ classdef (Sealed) CurrentSource < Device
             end
         end
 
-        function [U, I, Z] = getStates(inductor, result, circuit)
+        function [U, I, Z] = getStates(currentSource, result, circuit)
             arguments
                 currentSource (1, 1) CurrentSource
-                result    (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit   (1, 1) CircuitContext
+                result        (:, 1) double {mustBeNumeric, mustBeFinite}
+                circuit       (1, 1) CircuitContext
             end
 
             values = [0; result];

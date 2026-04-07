@@ -4,16 +4,17 @@ classdef (Sealed) Inductor < VoltageDefinedDevice
     end
 
     methods (Access = public)
-        function inductor = Inductor(name, entryNode, exitNode, inductance)
+        function inductor = Inductor(name, entryNode, exitNode, options)
             arguments
-                name       (1, 1) string
-                entryNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode   (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                inductance (1, 1) double {mustBePositive, mustBeFinite}
+                name      (1, 1) string
+                entryNode (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+
+                options.Inductance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
             inductor@VoltageDefinedDevice(name, entryNode, exitNode);
-            inductor.Inductance = inductance;
+            inductor.Inductance = options.Inductance;
         end
     end
 

@@ -4,16 +4,17 @@ classdef (Sealed) Breaker < VoltageDefinedDevice
     end
 
     methods (Access = public)
-        function breaker = Breaker(name, entryNode, exitNode, isClosed)
+        function breaker = Breaker(name, entryNode, exitNode, options)
             arguments
                 name      (1, 1) string
-                entryNode (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                isClosed  (1, 1) logical
+                entryNode (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+
+                options.IsClosed (1, 1) logical
             end
 
             breaker@VoltageDefinedDevice(name, entryNode, exitNode);
-            breaker.IsClosed = isClosed;
+            breaker.IsClosed = options.IsClosed;
         end
     end
 
@@ -52,9 +53,9 @@ classdef (Sealed) Breaker < VoltageDefinedDevice
 
         function [U, I, Z] = getStates(breaker, result, circuit)
             arguments
-                    breaker (1, 1) Breaker
-                    result   (:, 1) double {mustBeNumeric, mustBeFinite}
-                    circuit  (1, 1) CircuitContext
+                breaker (1, 1) Breaker
+                result  (:, 1) double {mustBeNumeric, mustBeFinite}
+                circuit (1, 1) CircuitContext
             end
 
             values = [0; result];

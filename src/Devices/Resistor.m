@@ -4,16 +4,17 @@ classdef (Sealed) Resistor < Device
     end
 
     methods (Access = public)
-        function resistor = Resistor(name, entryNode, exitNode, resistance)
+        function resistor = Resistor(name, entryNode, exitNode, options)
             arguments
-                name       (1, 1) string
-                entryNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode   (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                resistance (1, 1) double {mustBePositive, mustBeFinite}
+                name      (1, 1) string
+                entryNode (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger,  mustBeNonnegative}
+
+                options.Resistance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
             resistor@Device(name, entryNode, exitNode);
-            resistor.Resistance = resistance;
+            resistor.Resistance = options.Resistance;
         end
     end
 

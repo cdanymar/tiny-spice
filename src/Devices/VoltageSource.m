@@ -4,16 +4,18 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
     end
 
     methods (Access = public)
-        function voltageSource = VoltageSource(name, entryNode, exitNode, voltage)
+        function voltageSource = VoltageSource(name, entryNode, exitNode, options)
             arguments
                 name      (1, 1) string
-                entryNode (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                voltage   (1, 1) double {mustBeNumeric, mustBeFinite}
+                entryNode (1, 1) int32 {mustBeInteger, mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger, mustBeNonnegative}
+
+                options.Voltage (1, 1) double {mustBeReal, mustBeFinite}
+                options.Phase   (1, 1) double {mustBeReal, mustBeFinite} = 0
             end
 
             voltageSource@VoltageDefinedDevice(name, entryNode, exitNode);
-            voltageSource.Voltage = voltage;
+            voltageSource.Voltage = options.Voltage * exp(1i * deg2rad(options.Phase));
         end
     end
 

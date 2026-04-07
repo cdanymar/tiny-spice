@@ -4,16 +4,17 @@ classdef (Sealed) Capacitor < Device
     end
 
     methods (Access = public)
-        function capacitor = Capacitor(name, entryNode, exitNode, capacitance)
+        function capacitor = Capacitor(name, entryNode, exitNode, options)
             arguments
-                name        (1, 1) string
-                entryNode   (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                exitNode    (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                capacitance (1, 1) double {mustBePositive, mustBeFinite}
+                name      (1, 1) string
+                entryNode (1, 1) int32 {mustBeInteger, mustBeNonnegative}
+                exitNode  (1, 1) int32 {mustBeInteger, mustBeNonnegative}
+
+                options.Capacitance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
             capacitor@Device(name, entryNode, exitNode);
-            capacitor.Capacitance = capacitance;
+            capacitor.Capacitance = options.Capacitance;
         end
     end
 
