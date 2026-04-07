@@ -204,7 +204,7 @@ $$
   - [ ] Zener diode
   - [ ] Light-emitting diode
   - [ ] Thevenin's equivalent / component combination 
-- [ ] Implement AC
+- [x] ~~Implement AC~~ [`b740d35`](https://github.com/cdanymar/tiny-spice/tree/b740d35180d5394a9b8e59d3889403495f50b6ac)
 - [ ] Implement transient analysis
 - [ ] Create UI
   - [ ] Circuit builder
