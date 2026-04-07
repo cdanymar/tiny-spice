@@ -1,6 +1,6 @@
 classdef (Sealed) VoltageSource < VoltageDefinedDevice
     properties (Access = public)
-        Voltage (1, 1) double {mustBePositive, mustBeFinite} = 1
+        Voltage (1, 1) double {mustBeNumeric, mustBeFinite} = 1
     end
 
     methods (Access = public)
@@ -9,7 +9,7 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
                 name      (1, 1) string
                 entryNode (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
                 exitNode  (1, 1) int32  {mustBeInteger,  mustBeNonnegative}
-                voltage   (1, 1) double {mustBePositive, mustBeFinite}
+                voltage   (1, 1) double {mustBeNumeric, mustBeFinite}
             end
 
             voltageSource@VoltageDefinedDevice(name, entryNode, exitNode);
@@ -18,35 +18,36 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
     end
 
     methods (Access = {?Device, ?Circuit})
-        function [matA, matZ] = applyStamp(device, matA, matZ)
+        function applyStamp(voltageSource, simulation, circuit)
             arguments
-                device (1, 1) VoltageSource
-                matA   (:, :) double {mustBeNumeric, mustBeFinite}
-                matZ   (:, :) double {mustBeNumeric, mustBeFinite}
+                voltageSource (1, 1) VoltageSource
+                simulation    (1, 1) SimulationContext
+                circuit       (1, 1) CircuitContext
             end
 
-            in  = device.EntryNode;
-            out = device.ExitNode;
-            k   = size(matA, 1) + 1;
+            in  = voltageSource.EntryNode;
+            out = voltageSource.ExitNode;
+            k   = voltageSource.DeviceBranch;
 
-            matA(k, k) = 0;
-            matZ(k, 1) = device.Voltage;
+            simulation.LHS(k, k) = 0;
+            simulation.RHS(k, 1) = voltageSource.Voltage;
 
             if (in ~= 0)
-                matA(in, k) = matA(in, k) + 1;
-                matA(k, in) = matA(k, in) + 1;
+                simulation.LHS(in, k) = simulation.LHS(in, k) + 1;
+                simulation.LHS(k, in) = simulation.LHS(k, in) + 1;
             end
 
             if (out ~= 0)
-                matA(out, k) = matA(out, k) - 1;
-                matA(k, out) = matA(k, out) - 1;
+                simulation.LHS(out, k) = simulation.LHS(out, k) - 1;
+                simulation.LHS(k, out) = simulation.LHS(k, out) - 1;
             end
         end
 
-        function [U, I, Z] = getStates(voltageSource, result)
+        function [U, I, Z] = getStates(voltageSource, result, circuit)
             arguments
                 voltageSource (1, 1) VoltageSource
                 result        (:, 1) double {mustBeNumeric, mustBeFinite}
+                circuit       (1, 1) CircuitContext
             end
 
             values = [0; result];
@@ -55,7 +56,7 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
             vOut = values(voltageSource.ExitNode + 1);
 
             U = vIn - vOut;
-            I = -result(voltageSource.DeviceIndex);
+            I = -result(voltageSource.DeviceBranch);
             Z = 0;
         end
     end

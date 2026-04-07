@@ -18,36 +18,37 @@ classdef (Sealed) Resistor < Device
     end
 
     methods (Access = {?Device, ?Circuit})
-        function [matA, matZ] = applyStamp(device, matA, matZ)
+        function applyStamp(resistor, simulation, circuit)
             arguments
-                device (1, 1) Resistor
-                matA   (:, :) double {mustBeNumeric, mustBeFinite}
-                matZ   (:, :) double {mustBeNumeric, mustBeFinite}
+                resistor   (1, 1) Resistor
+                simulation (1, 1) SimulationContext
+                circuit    (1, 1) CircuitContext
             end
 
-            g = 1 / device.Resistance;
+            g = 1 / resistor.Resistance;
 
-            in  = device.EntryNode;
-            out = device.ExitNode;
+            in  = resistor.EntryNode;
+            out = resistor.ExitNode;
 
             if (in ~= 0)
-                matA(in, in) = matA(in, in) + g;
+                simulation.LHS(in, in) = simulation.LHS(in, in) + g;
             end
 
             if (out ~= 0)
-                matA(out, out) = matA(out, out) + g;
+                simulation.LHS(out, out) = simulation.LHS(out, out) + g;
             end
 
             if (in ~= 0) && (out ~= 0)
-                matA(in, out) = matA(in, out) - g;
-                matA(out, in) = matA(out, in) - g;
+                simulation.LHS(in, out) = simulation.LHS(in, out) - g;
+                simulation.LHS(out, in) = simulation.LHS(out, in) - g;
             end
         end
 
-        function [U, I, Z] = getStates(resistor, result)
+        function [U, I, Z] = getStates(resistor, result, circuit)
             arguments
                 resistor (1, 1) Resistor
                 result   (:, 1) double {mustBeNumeric, mustBeFinite}
+                circuit  (1, 1) CircuitContext
             end
 
             values = [0; result];
