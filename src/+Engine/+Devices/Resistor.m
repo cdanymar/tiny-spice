@@ -1,4 +1,4 @@
-classdef (Sealed) Resistor < Device
+classdef (Sealed) Resistor < Engine.Devices.Device
     properties (Access = public)
         Resistance (1, 1) double {mustBePositive, mustBeFinite} = 1
     end
@@ -13,17 +13,17 @@ classdef (Sealed) Resistor < Device
                 options.Resistance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
-            resistor@Device(name, entryNode, exitNode);
+            resistor@Engine.Devices.Device(name, entryNode, exitNode);
             resistor.Resistance = options.Resistance;
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(resistor, simulation, circuit)
             arguments
-                resistor   (1, 1) Resistor
-                simulation (1, 1) SimulationContext
-                circuit    (1, 1) CircuitContext
+                resistor   (1, 1) Engine.Devices.Resistor
+                simulation (1, 1) Engine.SimulationContext
+                circuit    (1, 1) Engine.CircuitContext
             end
 
             g = 1 / resistor.Resistance;
@@ -47,9 +47,9 @@ classdef (Sealed) Resistor < Device
 
         function [U, I, Z] = getStates(resistor, result, circuit)
             arguments
-                resistor (1, 1) Resistor
+                resistor (1, 1) Engine.Devices.Resistor
                 result   (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit  (1, 1) CircuitContext
+                circuit  (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];

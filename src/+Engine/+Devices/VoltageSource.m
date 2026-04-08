@@ -1,4 +1,4 @@
-classdef (Sealed) VoltageSource < VoltageDefinedDevice
+classdef (Sealed) VoltageSource < Engine.Devices.VoltageDefinedDevice
     properties (Access = public)
         Voltage (1, 1) double {mustBeNumeric, mustBeFinite} = 1
     end
@@ -14,17 +14,17 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
                 options.Phase   (1, 1) double {mustBeReal, mustBeFinite} = 0
             end
 
-            voltageSource@VoltageDefinedDevice(name, entryNode, exitNode);
+            voltageSource@Engine.Devices.VoltageDefinedDevice(name, entryNode, exitNode);
             voltageSource.Voltage = options.Voltage * exp(1i * deg2rad(options.Phase));
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(voltageSource, simulation, circuit)
             arguments
-                voltageSource (1, 1) VoltageSource
-                simulation    (1, 1) SimulationContext
-                circuit       (1, 1) CircuitContext
+                voltageSource (1, 1) Engine.Devices.VoltageSource
+                simulation    (1, 1) Engine.SimulationContext
+                circuit       (1, 1) Engine.CircuitContext
             end
 
             in  = voltageSource.EntryNode;
@@ -47,9 +47,9 @@ classdef (Sealed) VoltageSource < VoltageDefinedDevice
 
         function [U, I, Z] = getStates(voltageSource, result, circuit)
             arguments
-                voltageSource (1, 1) VoltageSource
+                voltageSource (1, 1) Engine.Devices.VoltageSource
                 result        (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit       (1, 1) CircuitContext
+                circuit       (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];

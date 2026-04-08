@@ -1,4 +1,4 @@
-classdef (Abstract) VoltageDefinedDevice < Device
+classdef (Abstract) VoltageDefinedDevice < Engine.Devices.Device
     properties (Access = public)
         DeviceBranch (1, 1) int32 {mustBeInteger, mustBeNonnegative} = 0
     end
@@ -11,7 +11,7 @@ classdef (Abstract) VoltageDefinedDevice < Device
                 exitNode  (1, 1) int32 {mustBeInteger, mustBeNonnegative}
             end
 
-            device@Device(name, entryNode, exitNode);
+            device@Engine.Devices.Device(name, entryNode, exitNode);
         end
     end
 end

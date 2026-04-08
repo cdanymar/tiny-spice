@@ -1,4 +1,4 @@
-classdef (Sealed) Capacitor < Device
+classdef (Sealed) Capacitor < Engine.Devices.Device
     properties (Access = public)
         Capacitance (1, 1) double {mustBePositive, mustBeFinite} = 1
     end
@@ -13,17 +13,17 @@ classdef (Sealed) Capacitor < Device
                 options.Capacitance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
-            capacitor@Device(name, entryNode, exitNode);
+            capacitor@Engine.Devices.Device(name, entryNode, exitNode);
             capacitor.Capacitance = options.Capacitance;
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(capacitor, simulation, circuit)
             arguments
-                capacitor  (1, 1) Capacitor
-                simulation (1, 1) SimulationContext
-                circuit    (1, 1) CircuitContext
+                capacitor  (1, 1) Engine.Devices.Capacitor
+                simulation (1, 1) Engine.SimulationContext
+                circuit    (1, 1) Engine.CircuitContext
             end
 
             Y = 2i * pi * circuit.Frequency * capacitor.Capacitance;
@@ -47,9 +47,9 @@ classdef (Sealed) Capacitor < Device
 
         function [U, I, Z] = getStates(capacitor, result, circuit)
             arguments
-                capacitor (1, 1) Capacitor
+                capacitor (1, 1) Engine.Devices.Capacitor
                 result    (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit   (1, 1) CircuitContext
+                circuit   (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];

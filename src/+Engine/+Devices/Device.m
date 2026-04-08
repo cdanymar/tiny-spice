@@ -21,7 +21,7 @@ classdef (Abstract) Device < handle
         end
     end
 
-    methods (Abstract, Access = {?Device, ?Circuit})
+    methods (Abstract, Access = {?Engine.Devices.Device, ?Engine.Circuit})
         applyStamp(device, simulationContext, circuitContext);
         [U, I, Z] = getStates(device, result, circuitContext);
     end

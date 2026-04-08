@@ -1,4 +1,4 @@
-classdef (Sealed) Inductor < VoltageDefinedDevice
+classdef (Sealed) Inductor < Engine.Devices.VoltageDefinedDevice
     properties (Access = public)
         Inductance (1, 1) double {mustBePositive, mustBeFinite} = 1
     end
@@ -13,17 +13,17 @@ classdef (Sealed) Inductor < VoltageDefinedDevice
                 options.Inductance (1, 1) double {mustBePositive, mustBeFinite}
             end
 
-            inductor@VoltageDefinedDevice(name, entryNode, exitNode);
+            inductor@Engine.Devices.VoltageDefinedDevice(name, entryNode, exitNode);
             inductor.Inductance = options.Inductance;
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(inductor, simulation, circuit)
             arguments
-                inductor   (1, 1) Inductor
-                simulation (1, 1) SimulationContext
-                circuit    (1, 1) CircuitContext
+                inductor   (1, 1) Engine.Devices.Inductor
+                simulation (1, 1) Engine.SimulationContext
+                circuit    (1, 1) Engine.CircuitContext
             end
 
             in  = inductor.EntryNode;
@@ -46,9 +46,9 @@ classdef (Sealed) Inductor < VoltageDefinedDevice
 
         function [U, I, Z] = getStates(inductor, result, circuit)
             arguments
-                inductor (1, 1) Inductor
+                inductor (1, 1) Engine.Devices.Inductor
                 result   (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit  (1, 1) CircuitContext
+                circuit  (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];

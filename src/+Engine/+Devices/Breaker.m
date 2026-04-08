@@ -1,4 +1,4 @@
-classdef (Sealed) Breaker < VoltageDefinedDevice
+classdef (Sealed) Breaker < Engine.Devices.VoltageDefinedDevice
     properties (Access = public)
         IsClosed (1, 1) logical
     end
@@ -13,17 +13,17 @@ classdef (Sealed) Breaker < VoltageDefinedDevice
                 options.IsClosed (1, 1) logical
             end
 
-            breaker@VoltageDefinedDevice(name, entryNode, exitNode);
+            breaker@Engine.Devices.VoltageDefinedDevice(name, entryNode, exitNode);
             breaker.IsClosed = options.IsClosed;
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(breaker, simulation, circuit)
             arguments
-                breaker    (1, 1) Breaker
-                simulation (1, 1) SimulationContext
-                circuit    (1, 1) CircuitContext
+                breaker    (1, 1) Engine.Devices.Breaker
+                simulation (1, 1) Engine.SimulationContext
+                circuit    (1, 1) Engine.CircuitContext
             end
 
             in  = breaker.EntryNode;
@@ -53,9 +53,9 @@ classdef (Sealed) Breaker < VoltageDefinedDevice
 
         function [U, I, Z] = getStates(breaker, result, circuit)
             arguments
-                breaker (1, 1) Breaker
+                breaker (1, 1) Engine.Devices.Breaker
                 result  (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit (1, 1) CircuitContext
+                circuit (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];

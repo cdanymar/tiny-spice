@@ -1,4 +1,4 @@
-classdef (Sealed) CurrentSource < Device
+classdef (Sealed) CurrentSource < Engine.Devices.Device
     properties (Access = public)
         Current (1, 1) double {mustBeNumeric, mustBeFinite} = 1
     end
@@ -14,17 +14,17 @@ classdef (Sealed) CurrentSource < Device
                 options.Phase   (1, 1) double {mustBeReal, mustBeFinite} = 0
             end
 
-            currentSource@Device(name, entryNode, exitNode);
+            currentSource@Engine.Devices.Device(name, entryNode, exitNode);
             currentSource.Current = options.Current * exp(1i * deg2rad(options.Phase));
         end
     end
 
-    methods (Access = {?Device, ?Circuit})
+    methods (Access = {?Engine.Devices.Device, ?Engine.Circuit})
         function applyStamp(currentSource, simulation, circuit)
             arguments
-                currentSource (1, 1) CurrentSource
-                simulation    (1, 1) SimulationContext
-                circuit       (1, 1) CircuitContext
+                currentSource (1, 1) Engine.Devices.CurrentSource
+                simulation    (1, 1) Engine.SimulationContext
+                circuit       (1, 1) Engine.CircuitContext
             end
 
             I = currentSource.Current;
@@ -43,9 +43,9 @@ classdef (Sealed) CurrentSource < Device
 
         function [U, I, Z] = getStates(currentSource, result, circuit)
             arguments
-                currentSource (1, 1) CurrentSource
+                currentSource (1, 1) Engine.Devices.CurrentSource
                 result        (:, 1) double {mustBeNumeric, mustBeFinite}
-                circuit       (1, 1) CircuitContext
+                circuit       (1, 1) Engine.CircuitContext
             end
 
             values = [0; result];
