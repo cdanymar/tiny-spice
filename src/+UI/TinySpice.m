@@ -1,8 +1,8 @@
-classdef (Sealed) TinySpice < TinySpiceUI
+classdef (Sealed) TinySpice < UI.TinySpiceUI
     properties
         MainWindow  matlab.ui.Figure
-        MainMenuBar MenuBar
-        MainCanvas  CircuitCanvas
+        MainMenuBar UI.MenuBar
+        MainCanvas  UI.CircuitCanvas
 
         % strong sizing breaks ctor
         % I don't give enough fucks to investivate
@@ -23,7 +23,7 @@ classdef (Sealed) TinySpice < TinySpiceUI
                 Resize      = false ...
             );
 
-            app.MainMenuBar = MenuBar(app.MainWindow);
+            app.MainMenuBar = UI.MenuBar(app.MainWindow);
             % todo assign callbacks
             % R2017b: Callback property is not recommended
             % Starting in R2017b, using the Callback property to assign a menu selected

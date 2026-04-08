@@ -1,4 +1,4 @@
-classdef (Sealed) MenuBar < TinySpiceUI
+classdef (Sealed) MenuBar < UI.TinySpiceUI
     properties (Access = public)
         FileMenu   matlab.ui.container.Menu
         EditMenu   matlab.ui.container.Menu
@@ -26,7 +26,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
     methods (Access = private)
         function renderFileMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 
@@ -42,7 +42,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
 
         function renderEditMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 
@@ -72,7 +72,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
 
         function renderViewMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 
@@ -84,7 +84,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
 
         function renderRunMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 
@@ -98,7 +98,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
 
         function renderWindowMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 
@@ -109,7 +109,7 @@ classdef (Sealed) MenuBar < TinySpiceUI
 
         function renderHelpMenu(menuBar, parent)
             arguments
-                menuBar MenuBar
+                menuBar UI.MenuBar
                 parent  matlab.ui.Figure
             end
 

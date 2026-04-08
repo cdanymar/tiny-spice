@@ -26,5 +26,5 @@ else
 end
 
 %%
-%app = TinySpice();
-%waitfor(app.MainWindow);
+app = UI.TinySpice();
+waitfor(app.MainWindow);
