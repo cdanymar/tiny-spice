@@ -2,6 +2,7 @@ classdef (Sealed) TinySpice < TinySpiceUI
     properties
         MainWindow  matlab.ui.Figure
         MainMenuBar MenuBar
+        MainCanvas  CircuitCanvas
 
         % strong sizing breaks ctor
         % I don't give enough fucks to investivate
@@ -9,10 +10,17 @@ classdef (Sealed) TinySpice < TinySpiceUI
 
     methods (Access = public)
         function app = TinySpice()
+            x = 300;
+            y = 300;
+
+            width  = 800;
+            height = 600;
+
             app.MainWindow = uifigure(...
-                'Name',        'tinySPICE', ...
-                'Position',    [200, 200, 400, 300], ...
-                'NumberTitle', 'off' ...
+                Name        = 'tinySPICE', ...
+                Position    = [x, y, width, height], ...
+                NumberTitle = false, ...
+                Resize      = false ...
             );
 
             app.MainMenuBar = MenuBar(app.MainWindow);
