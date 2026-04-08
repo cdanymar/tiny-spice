@@ -8,4 +8,4 @@ addpath('UI\');
 
 %%
 app = TinySpice();
-waitfor(gcf);
+waitfor(app.MainWindow);
