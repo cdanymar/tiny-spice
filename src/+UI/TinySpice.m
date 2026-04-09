@@ -58,8 +58,7 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
             end
 
             app.MainToolBar = UI.ToolBar(app.MainWindow);
-
-            p = uipanel(app.MainWindow);
+            % todo callbacks
         end
 
         function renderCircuitCanvas(app)
@@ -68,6 +67,8 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
             end
 
             app.MainCanvas = UI.CircuitCanvas(app.MainWindow);
+            % todo callbacks
+            % todo interaction
         end
     end
 end
