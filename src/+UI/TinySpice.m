@@ -5,7 +5,7 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
         MainCanvas  UI.CircuitCanvas
 
         % strong sizing breaks ctor
-        % I don't give enough fucks to investivate
+        % I don't give enough fucks to investigate
     end
 
     methods (Access = public)
