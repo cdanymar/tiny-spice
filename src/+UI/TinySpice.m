@@ -14,7 +14,7 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
             app.renderWindow();
             app.renderMenuBar();
             app.renderToolBar();
-            % app.renderCircuitCanvas();
+            app.renderCircuitCanvas();
         end
     end
 
