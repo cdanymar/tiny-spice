@@ -14,7 +14,7 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
             app.renderWindow();
             app.renderMenuBar();
             app.renderToolBar();
-            app.renderCircuitCanvas();
+            % app.renderCircuitCanvas();
         end
     end
 
@@ -45,11 +45,10 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
 
             app.MainMenuBar = UI.MenuBar(app.MainWindow);
 
-            % todo assign callbacks
-            % R2017b: Callback property is not recommended
-            % Starting in R2017b, using the Callback property to assign a menu selected
-            % callback is not recommended. Use the MenuSelectedFcn property instead. The
-            % property values are the same.
+            addlistener(app.MainMenuBar, 'FileExit',      @app.onExit);
+            addlistener(app.MainMenuBar, 'WindowRefresh', @app.onRefresh);
+            addlistener(app.MainMenuBar, 'HelpHelp',      @app.onHelp);
+            addlistener(app.MainMenuBar, 'HelpAbout',     @app.onAbout);
         end
 
         function renderToolBar(app)
@@ -69,6 +68,62 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
             app.MainCanvas = UI.CircuitCanvas(app.MainWindow);
             % todo callbacks
             % todo interaction
+        end
+    end
+
+    methods (Access = {?UI.TinySpiceUI})
+        function onExit(app, source, event)
+            arguments
+                app     UI.TinySpice
+                source
+                event   event.EventData
+            end
+
+            selection = uiconfirm(app.MainWindow, ...
+                "Are you sure you want to exit tinySPICE?", ...
+                "Exit tinySPICE", ...
+                Icon          = "question", ...
+                Options       = ["Yes", "No"], ...
+                DefaultOption = 2, ...
+                CancelOption  = 2 ...
+            );
+
+            if (selection == "Yes")
+                delete(app.MainWindow);
+            end
+
+            % todo prompt to save
+        end
+
+        function onRefresh(app, source, event)
+            arguments
+                app     UI.TinySpice
+                source
+                event   event.EventData
+            end
+
+            drawnow;
+        end
+
+        function onHelp(app, source, event)
+            arguments
+                app     UI.TinySpice
+                source
+                event   event.EventData
+            end
+        end
+
+        function onAbout(app, source, event)
+            arguments
+                app     UI.TinySpice
+                source
+                event   event.EventData
+            end
+
+            uialert(app.MainWindow, ...
+                "tinySPICE is a simple ideal linear circuit simulator and solver.", ...
+                "About tinySPICE" ...
+            );
         end
     end
 end
