@@ -65,7 +65,7 @@ classdef (Sealed) TinySpice < UI.TinySpiceUI
                 app UI.TinySpice
             end
 
-            app.MainCanvas = UI.CircuitCanvas(app.MainWindow);
+            app.MainCanvas = UI.CircuitCanvas(app.MainWindow, app.MainToolBar);
             % todo callbacks
             % todo interaction
         end

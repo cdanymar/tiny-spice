@@ -2,6 +2,8 @@ classdef (Sealed) ToolBar < UI.TinySpiceUI
     properties (Access = public)
         ToolGroup matlab.ui.container.ButtonGroup
         Buttons   (1, :) cell
+
+        SelectedTool (1, 1) UI.ToolType = UI.ToolType.PlaceResistor
     end
 
     properties (Constant, Access = private)
@@ -20,15 +22,15 @@ classdef (Sealed) ToolBar < UI.TinySpiceUI
 
             toolBar.renderGroup(window);
 
-            toolBar.renderButton(window, 0, 'R',   'Resistor');
-            toolBar.renderButton(window, 1, 'C',   'Capacitor');
-            toolBar.renderButton(window, 2, 'L',   'Inductor');
-            toolBar.renderButton(window, 3, 'gnd', 'Ground');
-            toolBar.renderButton(window, 4, 'brk', 'Breaker');
-            toolBar.renderButton(window, 5, 'U',   'Voltage Source');
-            toolBar.renderButton(window, 6, 'I',   'Current Source');
-            toolBar.renderButton(window, 7, '-+-', 'Wire');
-            toolBar.renderButton(window, 8, '',    'Inspect and free roam');
+            toolBar.renderToggle(window, 0, UI.ToolType.PlaceResistor);
+            toolBar.renderToggle(window, 1, UI.ToolType.PlaceCapacitor);
+            toolBar.renderToggle(window, 2, UI.ToolType.PlaceInductor);
+            %toolBar.renderToggle(window, 3, UI.ToolType.PlaceGround);
+            %toolBar.renderToggle(window, 4, UI.ToolType.PlaceBreaker);
+            toolBar.renderToggle(window, 5, UI.ToolType.PlaceVoltageSource);
+            toolBar.renderToggle(window, 6, UI.ToolType.PlaceCurrentSource);
+            toolBar.renderToggle(window, 7, UI.ToolType.PlaceWire);
+            toolBar.renderToggle(window, 8, UI.ToolType.FreeRoam);
         end
     end
 
@@ -46,27 +48,28 @@ classdef (Sealed) ToolBar < UI.TinySpiceUI
             y = parent.Position(4) - height - toolBar.Margin;
 
             toolBar.ToolGroup = uibuttongroup(parent, ...
-                Position = [x, y, width, height] ...
+                Position = [x, y, width, height], ...
+                SelectionChangedFcn = @toolBar.onToolSelected ...
             );
         end
 
         % todo use icons instead of text
         % todo use resource manager
-        function renderButton(toolBar, parent, offset, text, tooltip)
+        function renderToggle(toolBar, parent, offset, toolType)
             arguments
-                toolBar UI.ToolBar
-                parent  matlab.ui.Figure
-                offset  int32
-                text    string
-                tooltip string
+                toolBar  UI.ToolBar
+                parent   matlab.ui.Figure
+                offset   int32
+                toolType UI.ToolType
             end
 
             x = toolBar.Padding + (toolBar.ButtonGap + toolBar.ButtonSize) * offset;
             y = toolBar.Padding;
 
             button = uitogglebutton(toolBar.ToolGroup, ...
-                Text     = text, ...
-                Tooltip  = tooltip, ...
+                Text     = toolType.getIcon(), ...
+                Tooltip  = toolType.getTooltip(), ...
+                UserData = toolType, ...
                 Position = [x, y, toolBar.ButtonSize, toolBar.ButtonSize] ...
             );
 
@@ -75,5 +78,8 @@ classdef (Sealed) ToolBar < UI.TinySpiceUI
     end
 
     methods (Access = {?UI.TinySpiceUI})
+        function onToolSelected(toolBar, source, event)
+            toolBar.SelectedTool = event.NewValue.UserData;
+        end
     end
 end
