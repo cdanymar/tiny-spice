@@ -1,59 +1,23 @@
 classdef (Sealed) Resistor < UI.InteractableDevice
-    properties (Constant, Access = private) %todo manage
-        ImagePath = "D:\\tiny-spice\\sprites\\resistor.png";
-    end
-
     properties (SetAccess = protected)
-        Width  = 56;
-        Height = 22;
+        Width  = 60;
+        Height = 20;
     end
 
     methods (Access = public)
         function resistor = Resistor(ax, x, y)
             resistor@UI.InteractableDevice(x, y, ax);
+            
+            resistor.calculatePins();
             resistor.draw();
         end
 
-        function draw(obj)
-            [img, ~, alpha] = imread(obj.ImagePath);
-
-            left   = obj.X - (obj.Width / 2);
-            right  = obj.X + (obj.Width / 2);
-            bottom = obj.Y - (obj.Height / 2);
-            top    = obj.Y + (obj.Height / 2);
-
-            obj.Sprite = image(obj.CanvasAxes, ...
-                XData         = [left, right], ...
-                YData         = [top, bottom], ...
-                CData         = cat(3, ~img, ~img, ~img), ...
-                AlphaData     = alpha, ...
-                HitTest       = "on", ...
-                ButtonDownFcn = @obj.onResistorClick ...
-            );
-
-            % todo debugPivots()
-
-            radius = 3;
-            circle1 = rectangle(obj.CanvasAxes, ...
-                Position  = [obj.X - radius - obj.Width / 2, obj.Y - radius, radius*2, radius*2], ...
-                Curvature = [1 1], ...
-                FaceColor = "red", ...
-                EdgeColor = "none", ...
-                HitTest   = "off" ...
-            );
-
-            circle2 = rectangle(obj.CanvasAxes, ...
-                Position  = [obj.X - radius + obj.Width / 2, obj.Y - radius, radius*2, radius*2], ...
-                Curvature = [1 1], ...
-                FaceColor = "red", ...
-                EdgeColor = "none", ...
-                HitTest   = "off" ...
-            );
+        function draw(resistor)
         end
     end
 
     methods (Access = private)
-        function onResistorClick(obj, ~, ~)
+        function onResistorClick(resistor, ~, ~)
         end
     end
 end

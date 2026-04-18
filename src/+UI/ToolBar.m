@@ -25,11 +25,11 @@ classdef (Sealed) ToolBar < UI.TinySpiceUI
             toolBar.renderToggle(window, 0, UI.ToolType.PlaceResistor);
             toolBar.renderToggle(window, 1, UI.ToolType.PlaceCapacitor);
             toolBar.renderToggle(window, 2, UI.ToolType.PlaceInductor);
-            %toolBar.renderToggle(window, 3, UI.ToolType.PlaceGround);
-            %toolBar.renderToggle(window, 4, UI.ToolType.PlaceBreaker);
-            toolBar.renderToggle(window, 5, UI.ToolType.PlaceVoltageSource);
-            toolBar.renderToggle(window, 6, UI.ToolType.PlaceCurrentSource);
-            toolBar.renderToggle(window, 7, UI.ToolType.PlaceWire);
+            toolBar.renderToggle(window, 3, UI.ToolType.PlaceBreaker);
+            toolBar.renderToggle(window, 4, UI.ToolType.PlaceVoltageSource);
+            toolBar.renderToggle(window, 5, UI.ToolType.PlaceCurrentSource);
+            toolBar.renderToggle(window, 6, UI.ToolType.PlaceNode);
+            toolBar.renderToggle(window, 7, UI.ToolType.PlaceGround);
             toolBar.renderToggle(window, 8, UI.ToolType.FreeRoam);
         end
     end

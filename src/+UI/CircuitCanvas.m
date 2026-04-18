@@ -2,6 +2,9 @@ classdef (Sealed) CircuitCanvas < UI.TinySpiceUI
     properties (Access = public)
         Canvas matlab.ui.control.UIAxes
         ToolBar UI.ToolBar
+
+        Components (1, :) cell = {}
+        Wires      (1, :) cell = {}
     end
 
     properties (Constant, Access = private)
@@ -28,7 +31,7 @@ classdef (Sealed) CircuitCanvas < UI.TinySpiceUI
                 parent matlab.ui.Figure
             end
 
-            % make statically responsive
+            % todo make statically responsive
             x = 0;
             y = 4;
             width = 800;
@@ -62,24 +65,9 @@ classdef (Sealed) CircuitCanvas < UI.TinySpiceUI
             gridX = round(rawX / gridSize) * gridSize;
             gridY = round(rawY / gridSize) * gridSize;
 
-            % todo use meta strings?
             switch canvas.ToolBar.SelectedTool
                 case UI.ToolType.PlaceResistor
                     device = UI.Resistor(canvas.Canvas, gridX, gridY);
-                case UI.ToolType.PlaceCapacitor
-                    device = UI.Capacitor(canvas.Canvas, gridX, gridY);
-                case UI.ToolType.PlaceInductor
-                    device = UI.Inductor(canvas.Canvas, gridX, gridY);
-                %case UI.ToolType.PlaceGround
-                    %device = UI.Ground(canvas.Canvas, gridX, gridY);
-                %case UI.ToolType.PlaceBreaker
-                %    device = UI.Breaker(canvas.Canvas, gridX, gridY);
-                case UI.ToolType.PlaceVoltageSource
-                    device = UI.VoltageSource(canvas.Canvas, gridX, gridY);
-                case UI.ToolType.PlaceCurrentSource
-                    device = UI.CurrentSource(canvas.Canvas, gridX, gridY);
-                case UI.ToolType.PlaceWire
-                    % todo
             end
         end
     end
