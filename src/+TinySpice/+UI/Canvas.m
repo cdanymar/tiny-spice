@@ -84,10 +84,13 @@ classdef (Sealed) Canvas < handle
         end
 
         function onLeftClick(canvas, x, y)
-            if canvas.Toolbar.SelectedTool == TinySpice.UI.Tool.Wire
-                canvas.onWireClick(x, y);
-            else
-                canvas.onDeviceClick(x, y);
+            switch canvas.Toolbar.SelectedTool
+                case TinySpice.UI.Tool.Wire
+                    canvas.onWireClick(x, y);
+                case TinySpice.UI.Tool.Ground
+                    canvas.onGroundClick(x, y);
+                otherwise
+                    canvas.onDeviceClick(x, y);
             end
         end
 
@@ -128,12 +131,20 @@ classdef (Sealed) Canvas < handle
             device.EntryNode = entry;
             device.ExitNode = exit;
 
-            labelY = y - 2 * canvas.GridSize;
-            nameLabel = text(canvas.Axes, x, labelY, device.Name, Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
-            valueLabel = text(canvas.Axes, x, labelY - 12, num2str(device.Value), Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
+            labelY = y - canvas.GridSize;
+            nameLabel = text(canvas.Axes, x + 15, labelY, device.Name, Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
+            valueLabel = text(canvas.Axes, x + 15, labelY - 8, num2str(device.Value), Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
 
 
             canvas.Items{end + 1} = TinySpice.UI.GraphicDevice(device, x, y, canvas.Rotation, handles, nameLabel, valueLabel);
+        end
+
+        function onGroundClick(canvas, x, y)
+            ground = TinySpice.Circuit.Ground();
+            ground.Position = [x, y];
+            handles = ground.draw(canvas.Axes, x, y, canvas.Rotation);
+
+            canvas.Items{end + 1} = TinySpice.UI.GraphicGround(ground, handles);
         end
 
 
