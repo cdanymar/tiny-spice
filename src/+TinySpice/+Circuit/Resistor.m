@@ -34,5 +34,22 @@ classdef (Sealed) Resistor < TinySpice.Circuit.Device
             in  = [ix + x, iy + y];
             out = [ox + x, oy + y];
         end
+
+        function [A, z] = stamp(resistor, A, z, n1, n2, nodeCount, frequency)
+            Y = 1 / resistor.Value;
+
+            if (n1 > 0)
+                A(n1, n1) = A(n1, n1) + Y;
+            end
+
+            if (n2 > 0)
+                A(n2, n2) = A(n2, n2) + Y;
+            end
+
+            if (n1 > 0) && (n2 > 0)
+                A(n1, n2) = A(n1, n2) - Y;
+                A(n2, n1) = A(n2, n1) - Y;
+            end
+        end
     end
 end

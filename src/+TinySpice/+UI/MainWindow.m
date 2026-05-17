@@ -42,7 +42,10 @@ classdef (Sealed) MainWindow < handle
         end
 
         function createMenubar(mainWindow)
-            mainWindow.MenuBar = TinySpice.UI.MenuBar(mainWindow.Window);
+            mainWindow.MenuBar = TinySpice.UI.MenuBar(  ...
+                mainWindow.Window,                      ...
+                @mainWindow.onRunAC                     ...
+            );
         end
 
         function createToolbar(mainWindow)
@@ -59,6 +62,18 @@ classdef (Sealed) MainWindow < handle
                 mainWindow.ToolBar,                 ...
                 mainWindow.StatusBar                ...
             );
+        end
+
+
+        function onRunAC(mainWindow, source, event)
+            try
+                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve( ...
+                    mainWindow.Canvas.getItems(), 1000                        ...
+                );
+                TinySpice.UI.ResultsWindow(voltages, currents);
+            catch err
+                uialert(mainWindow.Window, err.message, 'Simulation Error');
+            end
         end
     end
 end

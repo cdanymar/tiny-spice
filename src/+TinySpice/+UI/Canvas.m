@@ -27,6 +27,10 @@ classdef (Sealed) Canvas < handle
             canvas.StatusBar = statusBar;
             canvas.createAxes(window);
         end
+
+        function items = getItems(canvas)
+            items = canvas.Items;
+        end
     end
 
     methods (Access = private)

@@ -15,6 +15,7 @@ classdef (Abstract) Device < handle
     methods (Abstract, Access = public)
         handles = draw(device, axes, x, y, angle);
         [in, out] = getTerminals(device, x, y, angle);
+        [A, z] = stamp(device, A, z, n1, n2, nodeCount, frequency);
     end
 
 

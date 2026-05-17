@@ -43,5 +43,21 @@ classdef (Sealed) VoltageSource < TinySpice.Circuit.VoltageDefinedDevice
             in  = [ix + x, iy + y];
             out = [ox + x, oy + y];
         end
+
+        function [A, z] = stamp(voltageSource, A, z, n1, n2, nodeCount, frequency)
+            k = nodeCount + voltageSource.Index;
+
+            if (n1 > 0)
+                A(n1, k) = A(n1, k) + 1;
+                A(k, n1) = A(k, n1) + 1;
+            end
+
+            if (n2 > 0)
+                A(n2, k) = A(n2, k) - 1;
+                A(k, n2) = A(k, n2) - 1;
+            end
+
+            z(k) = voltageSource.Value;
+        end
     end
 end
