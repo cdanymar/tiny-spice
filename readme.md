@@ -61,31 +61,6 @@ where:
 
 Individual stamps of all available components can be viewed [here](stamps.md).
 
-## Todo
-
-- [x] ~~Write readme~~ [`a4a37af`](https://github.com/cdanymar/tiny-spice/tree/a4a37af05d27a485e981ae07825a151ec27f3fad)
-- [x] ~~Implement basic components~~ [`c56a1f9`](https://github.com/cdanymar/tiny-spice/tree/c56a1f94251d9e02589fbab2510bb3fdb985eaf2)
-  - [x] ~~Resistor~~
-  - [x] ~~Voltage source~~
-- [x] ~~Implement more complex components~~ [`fd501d7`](https://github.com/cdanymar/tiny-spice/tree/fd501d7b1c9577022c966b3eeb60a16c55271be9)
-  - [x] ~~Inductor~~
-  - [x] ~~Capacitor~~
-  - [x] ~~Current source~~
-- [ ] Implement more fun components
-  - [ ] Diode
-  - [ ] Zener diode
-  - [ ] Light-emitting diode
-  - [ ] Thevenin's equivalent / component combination 
-- [x] ~~Implement AC~~ [`b740d35`](https://github.com/cdanymar/tiny-spice/tree/b740d35180d5394a9b8e59d3889403495f50b6ac)
-- [ ] Implement transient analysis
-- [ ] Create UI
-  - [ ] Circuit builder
-  - [ ] Main menu
-- [ ] Add serialization/deserialization
-- [ ] Create some API usage examples
-- [ ] Dockerize (maybe)
-- [ ] Rewrite in C++
-
 ## License
 
 **Unlicense** – I don't give a fuck what anyone does with this code; copy if you want.

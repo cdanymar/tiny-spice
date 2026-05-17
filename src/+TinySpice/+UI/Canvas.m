@@ -1,0 +1,190 @@
+classdef (Sealed) Canvas < handle
+    properties (Constant, Access = private)
+        Margin   = 2;
+        GridSize = 20;
+
+        % todo: refactor
+        ColorBackground = [0.13 0.13 0.13];
+        ColorGrid       = [0.22 0.22 0.22];
+        ColorComponent  = [0.92 0.92 0.92];
+    end
+
+    properties (Access = private)
+        Axes;
+
+        Toolbar;
+        StatusBar;
+
+        Rotation  = 0;
+        Items     = {};
+        WireBegin = [];
+        WireDot   = [];
+    end
+
+    methods (Access = public)
+        function canvas = Canvas(window, toolbar, statusBar)
+            canvas.Toolbar = toolbar;
+            canvas.StatusBar = statusBar;
+            canvas.createAxes(window);
+        end
+    end
+
+    methods (Access = private)
+        function createAxes(canvas, parent)
+            statusBarHeight = 22;
+            toolbarHeight = 24 + 2 * 2 + 2 * canvas.Margin;
+
+            x      = canvas.Margin;
+            y      = canvas.Margin;
+            width  = parent.Position(3) - 2 * canvas.Margin;
+            height = parent.Position(4) - toolbarHeight - 2 * canvas.Margin - statusBarHeight;
+
+            canvas.Axes = uiaxes(parent,                    ...
+                Position        = [x, y, width, height],    ...
+                XLim            = [0, width],               ...
+                YLim            = [0, height],              ...
+                XTick           = 0:canvas.GridSize:width,  ...
+                YTick           = 0:canvas.GridSize:height, ...
+                Color           = canvas.ColorBackground,   ...
+                BackgroundColor = canvas.ColorBackground,   ...
+                XColor          = canvas.ColorBackground,   ...
+                YColor          = canvas.ColorBackground,   ...
+                GridColor       = canvas.ColorGrid,         ...
+                GridAlpha       = 1,                        ...
+                ButtonDownFcn   = @canvas.onMouseClick      ...
+            );
+
+            grid(canvas.Axes, 'on');
+            hold(canvas.Axes, true);
+
+            parent.KeyPressFcn = @canvas.onKeyPress;
+        end
+
+
+        function onKeyPress(canvas, ~, event)
+            if strcmpi(event.Key, 'z') && any(strcmpi(event.Modifier, 'control'));
+                canvas.undo();
+            elseif strcmpi(event.Key, 'r')
+                canvas.Rotation = mod(canvas.Rotation + 90, 360);
+                canvas.StatusBar.setRotation(canvas.Rotation);
+            end
+        end
+
+        function onMouseClick(canvas, ~, event)
+            raw = event.IntersectionPoint(1:2);
+            x   = round(raw(1) / canvas.GridSize) * canvas.GridSize;
+            y   = round(raw(2) / canvas.GridSize) * canvas.GridSize;
+
+            switch canvas.Axes.Parent.SelectionType
+                case 'normal'
+                    canvas.onLeftClick(x, y);
+                case 'alt'
+                    canvas.onRightClick(x, y);
+            end
+        end
+
+        function onLeftClick(canvas, x, y)
+            if canvas.Toolbar.SelectedTool == TinySpice.UI.Tool.Wire
+                canvas.onWireClick(x, y);
+            else
+                canvas.onDeviceClick(x, y);
+            end
+        end
+
+        function onRightClick(canvas, x, y)
+            device = canvas.findDeviceAt(x, y);
+            if isempty(device); return; end
+
+            TinySpice.UI.PropertiesWindow(device);
+        end
+
+
+        function onWireClick(canvas, x, y)
+            if isempty(canvas.WireBegin)
+                canvas.WireBegin = [x, y];
+                canvas.WireDot   = plot(canvas.Axes, x, y, '.', Color = [1 1 1], MarkerSize = 12);
+            else
+                x1 = canvas.WireBegin(1);
+                y1 = canvas.WireBegin(2);
+
+                delete(canvas.WireDot);
+                canvas.WireBegin = [];
+                canvas.WireDot   = [];
+
+                wire    = TinySpice.Circuit.Wire();
+                handles = wire.draw(canvas.Axes, x1, y1, x, y);
+                canvas.Items{end + 1} = TinySpice.UI.GraphicWire(x1, y1, x, y, handles);
+            end
+        end
+
+        function onDeviceClick(canvas, x, y)
+            device = canvas.createDevice(canvas.Toolbar.SelectedTool);
+            if isempty(device);
+                return;
+            end
+
+            handles = device.draw(canvas.Axes, x, y, canvas.Rotation);
+            [entry, exit] = device.getTerminals(x, y, canvas.Rotation);
+            device.EntryNode = entry;
+            device.ExitNode = exit;
+
+            labelY = y - 2 * canvas.GridSize;
+            nameLabel = text(canvas.Axes, x, labelY, device.Name, Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
+            valueLabel = text(canvas.Axes, x, labelY - 12, num2str(device.Value), Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
+
+
+            canvas.Items{end + 1} = TinySpice.UI.GraphicDevice(device, x, y, canvas.Rotation, handles, nameLabel, valueLabel);
+        end
+
+
+        function undo(canvas)
+            if ~isempty(canvas.WireBegin)
+                delete(canvas.WireDot);
+                canvas.WireBegin = [];
+                canvas.WireDot   = [];
+                return;
+            end
+
+            if isempty(canvas.Items); return; end
+
+            canvas.Items{end}.undo();
+            canvas.Items(end) = [];
+        end
+
+        function redo(canvas)
+            % todo
+        end
+
+
+        function device = createDevice(canvas, tool)
+            switch tool
+                case TinySpice.UI.Tool.Resistor
+                    device = TinySpice.Circuit.Resistor();
+                case TinySpice.UI.Tool.VoltageSource
+                    device = TinySpice.Circuit.VoltageSource();
+                otherwise
+                    device = [];
+            end
+        end
+
+        function device = findDeviceAt(canvas, x, y)
+            device    = [];
+            threshold = canvas.GridSize * 1.5;
+            closest   = inf;
+
+            for (i = 1:numel(canvas.Items))
+                item = canvas.Items{i};
+
+                if ~isa(item, 'TinySpice.UI.GraphicDevice')
+                    continue;
+                end
+
+                dist = norm([item.X - x, item.Y - y]);
+                if dist < threshold && dist < closest
+                    closest = dist;
+                    device  = item;
+                end
+            end
+        end
+    end
+end
