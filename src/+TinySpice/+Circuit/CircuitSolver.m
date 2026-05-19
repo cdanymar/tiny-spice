@@ -43,10 +43,17 @@ classdef CircuitSolver
                 n1  = nodeMap(CB.posKey(dev.EntryNode));
                 n2  = nodeMap(CB.posKey(dev.ExitNode));
 
-                v1 = 0; if n1 > 0; v1 = nodeVoltages(n1); end
-                v2 = 0; if n2 > 0; v2 = nodeVoltages(n2); end
+                v1 = 0;
+                if (n1 > 0)
+                    v1 = nodeVoltages(n1);
+                end;
 
-                vAcross  = v1 - v2;
+                v2 = 0;
+                if (n2 > 0)
+                    v2 = nodeVoltages(n2);
+                end
+
+                vAcross  = v2 - v1;
                 iThrough = computeCurrent(dev, vAcross, branchCurrents, freq);
 
                 results(end + 1).Name = char(dev.Name);
