@@ -29,7 +29,6 @@ classdef (Sealed) ToolBar < handle
             toolBar.createToolToggle(TinySpice.UI.Tool.CurrentSource);
             toolBar.createToolToggle(TinySpice.UI.Tool.Wire);
             toolBar.createToolToggle(TinySpice.UI.Tool.Ground);
-            toolBar.createToolToggle(TinySpice.UI.Tool.Node);
             toolBar.createToolToggle(TinySpice.UI.Tool.FreeRoam);
         end
     end

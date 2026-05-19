@@ -12,8 +12,7 @@ classdef (Sealed) Tool
         CurrentSource   ('I', 'Place Current Source')
         Wire            ('—', 'Place Wire')
         Ground          ('G', 'Place Ground')
-        Node            ('✥', 'Place Node')
-        FreeRoam        ('↖', 'Free Roam')
+        FreeRoam        ('✥', 'Free Roam')
     end
 
     methods (Access = private)
