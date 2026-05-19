@@ -23,8 +23,8 @@ classdef CircuitBuilder
             end
 
             assigned  = containers.Map();
-            nodeCount = 0;
             nodeMap   = containers.Map();
+            nodeCount = 0;
 
             for i = 1:numel(items)
                 if isa(items{i}, 'TinySpice.UI.GraphicGround')

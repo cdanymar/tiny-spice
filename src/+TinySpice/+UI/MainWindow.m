@@ -44,6 +44,7 @@ classdef (Sealed) MainWindow < handle
         function createMenubar(mainWindow)
             mainWindow.MenuBar = TinySpice.UI.MenuBar(  ...
                 mainWindow.Window,                      ...
+                @mainWindow.onRunDC,                    ...
                 @mainWindow.onRunAC                     ...
             );
         end
@@ -74,9 +75,16 @@ classdef (Sealed) MainWindow < handle
             end
         end
 
-        function onRunAC(mainWindow, source, event)
+        function onRunAC(mainWindow, ~, ~)
+            dialog = TinySpice.UI.FrequencyDialog();
+            freq   = dialog.getFrequency();
+
             try
-                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), 50);
+                if isempty(freq);
+                    error("For AC analysis frequency must a positve real number.");
+                end
+
+                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), freq);
                 TinySpice.UI.ResultsWindow(voltages, currents);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');

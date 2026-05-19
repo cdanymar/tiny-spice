@@ -8,10 +8,10 @@ classdef (Sealed) MenuBar < handle
 
 
     methods (Access = public)
-        function menuBar = MenuBar(parentWindow, runCallback)
+        function menuBar = MenuBar(parentWindow, runDCCallback, runACCallback)
             menuBar.createFileMenu(parentWindow);
             menuBar.createEditMenu(parentWindow);
-            menuBar.createRunMenu(parentWindow, runCallback);
+            menuBar.createRunMenu(parentWindow, runDCCallback, runACCallback);
             menuBar.createHelpMenu(parentWindow);
         end
     end
@@ -36,11 +36,11 @@ classdef (Sealed) MenuBar < handle
             uimenu(runMenu, Text = '&Redo', Enable = false);
         end
 
-        function createRunMenu(menuBar, parent, runCallback)
+        function createRunMenu(menuBar, parent, runDCCallback, runACCallback)
             runMenu = uimenu(parent, Text = '&Run');
 
-            uimenu(runMenu, Text = '&DC');
-            uimenu(runMenu, Text = '&AC (HSS)', MenuSelectedFcn = runCallback);
+            uimenu(runMenu, Text = '&DC', MenuSelectedFcn = runDCCallback);
+            uimenu(runMenu, Text = '&AC (HSS)', MenuSelectedFcn = runACCallback);
         end
 
         function createHelpMenu(menuBar, parent)

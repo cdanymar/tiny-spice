@@ -43,7 +43,7 @@ classdef (Sealed) Inductor < TinySpice.Circuit.VoltageDefinedDevice
             exit  = [xx + x, xy + y];
         end
 
-        function [A, z] = stamp(ind, A, z, n1, n2, ~, freq)
+        function [A, z] = stamp(ind, A, z, n1, n2, nodeCount, freq)
             k = nodeCount + ind.Index;
             Z = 1j * 2 * pi * freq * ind.Value;
 
