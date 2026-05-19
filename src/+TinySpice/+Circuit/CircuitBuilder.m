@@ -15,6 +15,7 @@ classdef CircuitBuilder
                 elseif isa(item, 'TinySpice.UI.GraphicWire')
                     p1 = [item.X1, item.Y1];
                     p2 = [item.X2, item.Y2];
+
                     CB.addKey(parent, p1);
                     CB.addKey(parent, p2);
                     CB.union(parent, p1, p2);

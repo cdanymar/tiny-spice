@@ -65,11 +65,18 @@ classdef (Sealed) MainWindow < handle
         end
 
 
+        function onRunDC(mainWindow, source, event)
+            try
+                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), eps);
+                TinySpice.UI.ResultsWindow(voltages, currents);
+            catch err
+                uialert(mainWindow.Window, err.message, 'Simulation Error');
+            end
+        end
+
         function onRunAC(mainWindow, source, event)
             try
-                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve( ...
-                    mainWindow.Canvas.getItems(), 1000                        ...
-                );
+                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), 50);
                 TinySpice.UI.ResultsWindow(voltages, currents);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');

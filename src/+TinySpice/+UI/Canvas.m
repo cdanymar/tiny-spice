@@ -175,8 +175,14 @@ classdef (Sealed) Canvas < handle
             switch tool
                 case TinySpice.UI.Tool.Resistor
                     device = TinySpice.Circuit.Resistor();
+                case TinySpice.UI.Tool.Capacitor
+                    device = TinySpice.Circuit.Capacitor();
+                case TinySpice.UI.Tool.Inductor
+                    device = TinySpice.Circuit.Inductor();
                 case TinySpice.UI.Tool.VoltageSource
                     device = TinySpice.Circuit.VoltageSource();
+                case TinySpice.UI.Tool.CurrentSource
+                    device = TinySpice.Circuit.CurrentSource();
                 otherwise
                     device = [];
             end

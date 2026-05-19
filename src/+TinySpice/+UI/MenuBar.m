@@ -39,14 +39,14 @@ classdef (Sealed) MenuBar < handle
         function createRunMenu(menuBar, parent, runCallback)
             runMenu = uimenu(parent, Text = '&Run');
 
-            uimenu(runMenu, Text = '&DC', Enable = false);
+            uimenu(runMenu, Text = '&DC');
             uimenu(runMenu, Text = '&AC (HSS)', MenuSelectedFcn = runCallback);
         end
 
         function createHelpMenu(menuBar, parent)
             helpMenu = uimenu(parent, Text = '&Help');
 
-            uimenu(helpMenu, Text = 'About');
+            uimenu(helpMenu, Text = '&About');
         end
     end
 end
