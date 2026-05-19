@@ -4,9 +4,9 @@ classdef (Sealed) Canvas < handle
         GridSize = 20;
 
         % todo: refactor
-        ColorBackground = [0.13 0.13 0.13];
-        ColorGrid       = [0.22 0.22 0.22];
-        ColorComponent  = [0.92 0.92 0.92];
+        ColorBackground = [0.13, 0.13, 0.13];
+        ColorGrid       = [0.22, 0.22, 0.22];
+        ColorComponent  = [0.92, 0.92, 0.92];
     end
 
     properties (Access = private)
@@ -30,6 +30,42 @@ classdef (Sealed) Canvas < handle
 
         function items = getItems(canvas)
             items = canvas.Items;
+        end
+
+        function clearCanvas(canvas)
+            for (i = 1:numel(canvas.Items))
+                canvas.Items{i}.undo();
+            end
+
+            canvas.Items = {};
+        end
+
+        function loadCircuit(canvas, data)
+            canvas.clearCanvas();
+
+            if isstruct(data.devices)
+                for i = 1:numel(data.devices)
+                    d      = data.devices(i);
+                    device = feval(d.type);
+                    device.Name  = d.name;
+                    device.Value = d.value;
+                    canvas.placeDevice(device, d.x, d.y, d.rotation);
+                end
+            end
+
+            if isstruct(data.wires)
+                for i = 1:numel(data.wires)
+                    w = data.wires(i);
+                    canvas.placeWire(w.x1, w.y1, w.x2, w.y2);
+                end
+            end
+
+            if isstruct(data.grounds)
+                for i = 1:numel(data.grounds)
+                    g = data.grounds(i);
+                    canvas.placeGround(g.x, g.y, g.rotation);
+                end
+            end
         end
     end
 
@@ -100,11 +136,24 @@ classdef (Sealed) Canvas < handle
 
         function onRightClick(canvas, x, y)
             device = canvas.findDeviceAt(x, y);
-            if isempty(device); return; end
+
+            if isempty(device)
+                return;
+             end
 
             TinySpice.UI.PropertiesWindow(device);
         end
 
+
+        function onDeviceClick(canvas, x, y)
+            device = canvas.createDevice(canvas.Toolbar.SelectedTool);
+
+            if isempty(device)
+                return;
+             end
+
+            canvas.placeDevice(device, x, y, canvas.Rotation);
+        end
 
         function onWireClick(canvas, x, y)
             if isempty(canvas.WireBegin)
@@ -118,37 +167,41 @@ classdef (Sealed) Canvas < handle
                 canvas.WireBegin = [];
                 canvas.WireDot   = [];
 
-                wire    = TinySpice.Circuit.Wire();
-                handles = wire.draw(canvas.Axes, x1, y1, x, y);
-                canvas.Items{end + 1} = TinySpice.UI.GraphicWire(x1, y1, x, y, handles);
+                canvas.placeWire(x1, y1, x, y);
             end
-        end
-
-        function onDeviceClick(canvas, x, y)
-            device = canvas.createDevice(canvas.Toolbar.SelectedTool);
-            if isempty(device);
-                return;
-            end
-
-            handles = device.draw(canvas.Axes, x, y, canvas.Rotation);
-            [entry, exit] = device.getTerminals(x, y, canvas.Rotation);
-            device.EntryNode = entry;
-            device.ExitNode = exit;
-
-            labelY = y - canvas.GridSize;
-            nameLabel = text(canvas.Axes, x + 15, labelY, device.Name, Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
-            valueLabel = text(canvas.Axes, x + 15, labelY - 8, num2str(device.Value), Color = canvas.ColorComponent, FontSize=12, HorizontalAlignment='center');
-
-
-            canvas.Items{end + 1} = TinySpice.UI.GraphicDevice(device, x, y, canvas.Rotation, handles, nameLabel, valueLabel);
         end
 
         function onGroundClick(canvas, x, y)
-            ground = TinySpice.Circuit.Ground();
-            ground.Position = [x, y];
-            handles = ground.draw(canvas.Axes, x, y, canvas.Rotation);
+            canvas.placeGround(x, y, canvas.Rotation);
+        end
 
-            canvas.Items{end + 1} = TinySpice.UI.GraphicGround(ground, handles);
+
+        function placeDevice(canvas, device, x, y, rotation)
+            handles          = device.draw(canvas.Axes, x, y, rotation);
+            [entry, exit]    = device.getTerminals(x, y, rotation);
+            device.EntryNode = entry;
+            device.ExitNode  = exit;
+
+            labelY     = y - 2 * canvas.GridSize;
+            nameLabel  = text(canvas.Axes, x + 15, labelY,      '');
+            valueLabel = text(canvas.Axes, x + 15, labelY - 15, '');
+
+            item = TinySpice.UI.GraphicDevice(device, x, y, rotation, handles, nameLabel, valueLabel);
+            item.updateLabels();
+            canvas.Items{end + 1} = item;
+        end
+
+        function placeWire(canvas, x1, y1, x2, y2)
+            wire    = TinySpice.Circuit.Wire();
+            handles = wire.draw(canvas.Axes, x1, y1, x2, y2);
+            canvas.Items{end + 1} = TinySpice.UI.GraphicWire(x1, y1, x2, y2, handles);
+        end
+
+        function placeGround(canvas, x, y, rotation)
+            gnd          = TinySpice.Circuit.Ground();
+            gnd.Position = [x, y];
+            handles      = gnd.draw(canvas.Axes, x, y, rotation);
+            canvas.Items{end + 1} = TinySpice.UI.GraphicGround(gnd, rotation, handles);
         end
 
 
@@ -172,6 +225,7 @@ classdef (Sealed) Canvas < handle
 
 
         function device = createDevice(canvas, tool)
+            % todo: meta -> str -> meta ?
             switch tool
                 case TinySpice.UI.Tool.Resistor
                     device = TinySpice.Circuit.Resistor();

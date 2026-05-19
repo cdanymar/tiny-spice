@@ -42,11 +42,12 @@ classdef (Sealed) MainWindow < handle
         end
 
         function createMenubar(mainWindow)
-            mainWindow.MenuBar = TinySpice.UI.MenuBar(  ...
-                mainWindow.Window,                      ...
-                @mainWindow.onRunDC,                    ...
-                @mainWindow.onRunAC                     ...
-            );
+            callbacks.new    = @(~,~) mainWindow.onFileNew();
+            callbacks.open   = @(~,~) mainWindow.onFileOpen();
+            callbacks.save   = @(~,~) mainWindow.onFileSave();
+            callbacks.run    = @(~,~) mainWindow.onRunAC();
+
+            mainWindow.MenuBar = TinySpice.UI.MenuBar(mainWindow.Window, callbacks);
         end
 
         function createToolbar(mainWindow)
@@ -88,6 +89,45 @@ classdef (Sealed) MainWindow < handle
                 TinySpice.UI.ResultsWindow(res);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');
+            end
+        end
+
+        function onFileNew(mainWindow)
+            mainWindow.Canvas.clearCanvas();
+        end
+
+        function onFileOpen(mainWindow)
+            [file, path] = uigetfile('*.json', 'Open Circuit');
+            if isequal(file, 0); return; end
+
+            try
+                raw  = fileread(fullfile(path, file));
+                data = TinySpice.IO.Serializer.deserialize(raw);
+                mainWindow.Canvas.loadCircuit(data);
+            catch err
+                uialert(mainWindow.Window, err.message, 'Load Error');
+            end
+        end
+
+        function onFileSave(mainWindow)
+            [file, path] = uiputfile('*.json', 'Save Circuit');
+            if isequal(file, 0); return; end
+
+            mainWindow.saveToFile(fullfile(path, file));
+        end
+
+        function onFileSaveAs(mainWindow)
+            mainWindow.onFileSave();
+        end
+
+        function saveToFile(mainWindow, filepath)
+            try
+                json = TinySpice.IO.Serializer.serialize(mainWindow.Canvas.getItems());
+                fid  = fopen(filepath, 'w');
+                fprintf(fid, '%s', json);
+                fclose(fid);
+            catch err
+                uialert(mainWindow.Window, err.message, 'Save Error');
             end
         end
     end

@@ -1,16 +1,18 @@
 classdef (Sealed) GraphicGround < handle
     properties (Access = public)
-        Ground
+        Ground;
+        Rotation = 0;
     end
 
     properties (Access = private)
-        Handles
+        Handles;
     end
 
     methods (Access = public)
-        function gg = GraphicGround(ground, handles)
-            gg.Ground  = ground;
-            gg.Handles = handles;
+        function gg = GraphicGround(ground, rotation, handles)
+            gg.Ground   = ground;
+            gg.Rotation = rotation;
+            gg.Handles  = handles;
         end
 
         function undo(gg)
