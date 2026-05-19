@@ -4,7 +4,7 @@
             "type": "TinySpice.Circuit.VoltageSource",
             "x": 200,
             "y": 340,
-            "rotation": 0,
+            "angle": 0,
             "name": "",
             "value": 220
         },
@@ -12,7 +12,7 @@
             "type": "TinySpice.Circuit.Capacitor",
             "x": 280,
             "y": 380,
-            "rotation": 0,
+            "angle": 0,
             "name": "C",
             "value": 5E-5
         },
@@ -20,7 +20,7 @@
             "type": "TinySpice.Circuit.Resistor",
             "x": 400,
             "y": 380,
-            "rotation": 0,
+            "angle": 0,
             "name": "R",
             "value": 200
         },
@@ -28,7 +28,7 @@
             "type": "TinySpice.Circuit.Inductor",
             "x": 480,
             "y": 340,
-            "rotation": 90,
+            "angle": 90,
             "name": "L",
             "value": 0.003
         },
@@ -36,7 +36,7 @@
             "type": "TinySpice.Circuit.Resistor",
             "x": 560,
             "y": 340,
-            "rotation": 90,
+            "angle": 90,
             "name": "Load",
             "value": 100
         }
@@ -89,7 +89,7 @@
         {
             "x": 200,
             "y": 280,
-            "rotation": 0
+            "angle": 0
         }
     ]
 }

@@ -20,8 +20,8 @@ classdef (Sealed) StatusBar < handle
             sb.ToolLabel.Text = sprintf('Tool: %s', tool.Label);
         end
 
-        function setRotation(sb, rotation)
-            sb.RotationLabel.Text = sprintf('Rotation: %d°', rotation);
+        function setRotation(sb, angle)
+            sb.RotationLabel.Text = sprintf('Rotation: %d°', angle);
         end
     end
 

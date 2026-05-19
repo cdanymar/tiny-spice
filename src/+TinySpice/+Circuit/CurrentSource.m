@@ -1,62 +1,43 @@
 classdef (Sealed) CurrentSource < TinySpice.Circuit.Device
     methods (Access = public)
-        function handles = draw(cs, axes, x, y, rotation)
-            g     = cs.GridSize;
-            theta = linspace(0, 2 * pi, 60);
+        function handles = draw(U, axes, x, y, angle)
+            g = U.GridSize;
+            r = g;
 
-            r = 0.8 * g;
-            xCircleTop = r * cos(theta);
-            yCircleTop = r * sin(theta) + 0.5 * g;
-            xCircleBot = r * cos(theta);
-            yCircleBot = r * sin(theta) - 0.5 * g;
+            theta = linspace(0, 2*pi, 60);
 
-            xShaft = [0, 0];
-            yShaft = [-0.6 * g, 0.6 * g];
+            circle = U.rotate(angle) * [
+                r*cos(theta),   NaN,   0,   0,   NaN,    0,    0;
+                r*sin(theta),   NaN,   r, 2*g,   NaN,   -r, -2*g;
+            ];
 
-            xHead = [-g / 5, 0, g / 5, 0];
-            yHead = [0.3 * g, 0.6 * g, 0.3 * g, 0.6 * g];
+            shaft = U.rotate(angle) * [
+                     0,     0;
+                -0.5*r, 0.5*r;
+            ];
+            head = U.rotate(angle) * [
+                 -r/4,     0,   r/4;
+                0.1*r, 0.5*r, 0.1*r;
+            ];
 
-            xLeadT = [0, 0];
-            yLeadT = [1.3 * g, 2 * g];
-
-            xLeadB = [0, 0];
-            yLeadB = [-1.3 * g, -2 * g];
-
-            [xCircleTop, yCircleTop] = cs.rotatePoints(xCircleTop, yCircleTop, rotation);
-            [xCircleBot, yCircleBot] = cs.rotatePoints(xCircleBot, yCircleBot, rotation);
-            [xShaft,     yShaft    ] = cs.rotatePoints(xShaft,     yShaft,     rotation);
-            [xHead,      yHead     ] = cs.rotatePoints(xHead,      yHead,      rotation);
-            [xLeadT,     yLeadT    ] = cs.rotatePoints(xLeadT,     yLeadT,     rotation);
-            [xLeadB,     yLeadB    ] = cs.rotatePoints(xLeadB,     yLeadB,     rotation);
-
-            color = [1, 1, 1];
-            h1 = plot(axes, xCircleTop + x, yCircleTop + y, Color = color, LineWidth = 1.5);
-            h2 = plot(axes, xCircleBot + x, yCircleBot + y, Color = color, LineWidth = 1.5);
-            h3 = plot(axes, xShaft     + x, yShaft     + y, Color = color, LineWidth = 1.5);
-            h4 = plot(axes, xHead      + x, yHead      + y, Color = color, LineWidth = 1.5);
-            h5 = plot(axes, xLeadT     + x, yLeadT     + y, Color = color, LineWidth = 1.5);
-            h6 = plot(axes, xLeadB     + x, yLeadB     + y, Color = color, LineWidth = 1.5);
-
-            handles = [h1, h2, h3, h4, h5, h6];
+            handles = [
+                line(axes, circle(1, :) + x, circle(2, :) + y),
+                line(axes,  shaft(1, :) + x,  shaft(2, :) + y),
+                line(axes,   head(1, :) + x,   head(2, :) + y)
+            ];
         end
 
-        function [entry, exit] = getTerminals(cs, x, y, rotation)
-            g = cs.GridSize;
-
-            [ex, ey] = cs.rotatePoints(0, 2 * g, rotation);
-            [xx, xy] = cs.rotatePoints(0, -2 * g, rotation);
-
-            entry = [ex + x, ey + y];
-            exit  = [xx + x, xy + y];
+        function [in, out] = getTerminals(I, x, y, angle)
+            [in, out] = getTerminals@TinySpice.Circuit.Device(I, x, y, angle - 90);
         end
 
-        function [A, z] = stamp(cs, A, z, n1, n2, ~, ~)
-            if (n1 > 0)
-                z(n1) = z(n1) + cs.Value;
+        function [A, z] = stamp(I, A, z, in, out, nodeCount, frequency)
+            if (in > 0)
+                z(in) = z(in) + I.Value;
             end
 
-            if (n2 > 0)
-                z(n2) = z(n2) - cs.Value;
+            if (out > 0)
+                z(out) = z(out) - I.Value;
             end
         end
     end

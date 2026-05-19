@@ -1,63 +1,46 @@
 classdef (Sealed) VoltageSource < TinySpice.Circuit.VoltageDefinedDevice
     methods (Access = public)
-        function handles = draw(vs, axes, x, y, rotation)
-            color = [1 1 1];
-            g     = vs.GridSize;
-            r     = g;
-            theta = linspace(0, 2 * pi, 60);
+        function handles = draw(U, axes, x, y, angle)
+            g = U.GridSize;
+            r = g;
 
-            xLeadT = [0, 0 ];
-            yLeadT = [r, 2 * g];
+            theta = linspace(0, 2*pi, 60);
 
-            xLeadB = [0, 0];
-            yLeadB = [-r, -2 * g];
+            circle = U.rotate(angle) * [
+                r*cos(theta),   NaN,   0,   0,   NaN,    0,    0;
+                r*sin(theta),   NaN,   r, 2*g,   NaN,   -r, -2*g;
+            ];
 
-            xPlus  =  0;
-            yPlus  =  r / 2;
+            labels = U.rotate(angle) * [
+                  0,    0;
+                r/2, -r/2;
+            ];
 
-            xMinus =  0;
-            yMinus = -r / 2;
-
-            [xLeadT, yLeadT] = vs.rotatePoints(xLeadT, yLeadT, rotation);
-            [xLeadB, yLeadB] = vs.rotatePoints(xLeadB, yLeadB, rotation);
-            [xPlus,  yPlus ] = vs.rotatePoints(xPlus,  yPlus,  rotation);
-            [xMinus, yMinus] = vs.rotatePoints(xMinus, yMinus, rotation);
-
-            h1 = plot(axes, x + r * cos(theta), y + r * sin(theta), Color = color, LineWidth = 1.5);
-
-            h2 = plot(axes, xLeadT + x, yLeadT + y, Color = color, LineWidth = 1.5);
-            h3 = plot(axes, xLeadB + x, yLeadB + y, Color = color, LineWidth = 1.5);
-
-            h4 = text(axes, xPlus  + x, yPlus  + y, '+', Color = color, FontSize = 11, HorizontalAlignment = 'center');
-            h5 = text(axes, xMinus + x, yMinus + y, '−', Color = color, FontSize = 11, HorizontalAlignment = 'center');
-
-            handles = [h1, h2, h3, h4, h5];
+            handles = [
+                line(axes, circle(1, :) + x, circle(2, :) + y),
+                text(axes, labels(1, 1) + x, labels(2, 1) + y, '+', HorizontalAlignment = 'center')
+                text(axes, labels(1, 2) + x, labels(2, 2) + y, '−', HorizontalAlignment = 'center')
+            ];
         end
 
-        function [in, out] = getTerminals(voltageSource, x, y, rotation)
-            g = voltageSource.GridSize;
-
-            [ix, iy] = voltageSource.rotatePoints(0,  2*g, rotation);
-            [ox, oy] = voltageSource.rotatePoints(0, -2*g, rotation);
-
-            in  = [ix + x, iy + y];
-            out = [ox + x, oy + y];
+        function [in, out] = getTerminals(U, x, y, angle)
+            [in, out] = getTerminals@TinySpice.Circuit.Device(U, x, y, angle - 90);
         end
 
-        function [A, z] = stamp(voltageSource, A, z, n1, n2, nodeCount, frequency)
-            k = nodeCount + voltageSource.Index;
+        function [A, z] = stamp(U, A, z, in, out, nodeCount, frequency)
+            k = nodeCount + U.Index;
 
-            if (n1 > 0)
-                A(n1, k) = A(n1, k) + 1;
-                A(k, n1) = A(k, n1) + 1;
+            if (in > 0)
+                A(in, k) = A(in, k) + 1;
+                A(k, in) = A(k, in) + 1;
             end
 
-            if (n2 > 0)
-                A(n2, k) = A(n2, k) - 1;
-                A(k, n2) = A(k, n2) - 1;
+            if (out > 0)
+                A(out, k) = A(out, k) - 1;
+                A(k, out) = A(k, out) - 1;
             end
 
-            z(k) = voltageSource.Value;
+            z(k) = U.Value;
         end
     end
 end

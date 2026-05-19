@@ -1,4 +1,4 @@
-classdef CircuitBuilder
+classdef (Sealed) CircuitBuilder
     methods (Static)
         function [nodeMap, nodeCount] = build(items)
             parent = containers.Map();

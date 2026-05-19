@@ -4,6 +4,7 @@ classdef (Sealed) Canvas < handle
         GridSize = 20;
 
         % todo: refactor
+        ColorForeground = [1, 1, 1];
         ColorBackground = [0.13, 0.13, 0.13];
         ColorGrid       = [0.22, 0.22, 0.22];
         ColorComponent  = [0.92, 0.92, 0.92];
@@ -49,7 +50,7 @@ classdef (Sealed) Canvas < handle
                     device = feval(d.type);
                     device.Name  = d.name;
                     device.Value = d.value;
-                    canvas.placeDevice(device, d.x, d.y, d.rotation);
+                    canvas.placeDevice(device, d.x, d.y, d.angle);
                 end
             end
 
@@ -63,7 +64,7 @@ classdef (Sealed) Canvas < handle
             if isstruct(data.grounds)
                 for i = 1:numel(data.grounds)
                     g = data.grounds(i);
-                    canvas.placeGround(g.x, g.y, g.rotation);
+                    canvas.placeGround(g.x, g.y, g.angle);
                 end
             end
         end
@@ -89,10 +90,17 @@ classdef (Sealed) Canvas < handle
                 BackgroundColor = canvas.ColorBackground,   ...
                 XColor          = canvas.ColorBackground,   ...
                 YColor          = canvas.ColorBackground,   ...
+                ColorOrder      = canvas.ColorForeground,   ...
                 GridColor       = canvas.ColorGrid,         ...
-                GridAlpha       = 1,                        ...
+                GridAlpha       = 0.5,                      ...
                 ButtonDownFcn   = @canvas.onMouseClick      ...
             );
+
+            % todo refactor defautls for drawing
+            set(canvas.Axes, 'defaultLineLineWidth', 1.5);
+            set(canvas.Axes, 'defaultTextFontSize', 15);
+            set(canvas.Axes, 'defaultTextHorizontalAlignment', 'left');
+            set(canvas.Axes, 'defaultTextVerticalAlignment', 'middle');
 
             grid(canvas.Axes, 'on');
             hold(canvas.Axes, true);
@@ -176,17 +184,17 @@ classdef (Sealed) Canvas < handle
         end
 
 
-        function placeDevice(canvas, device, x, y, rotation)
-            handles          = device.draw(canvas.Axes, x, y, rotation);
-            [entry, exit]    = device.getTerminals(x, y, rotation);
+        function placeDevice(canvas, device, x, y, angle)
+            handles          = device.draw(canvas.Axes, x, y, angle);
+            [entry, exit]    = device.getTerminals(x, y, angle);
             device.EntryNode = entry;
             device.ExitNode  = exit;
 
-            labelY     = y - 2 * canvas.GridSize;
-            nameLabel  = text(canvas.Axes, x + 15, labelY,      '');
-            valueLabel = text(canvas.Axes, x + 15, labelY - 15, '');
+            labelY     = y - canvas.GridSize;
+            nameLabel  = text(canvas.Axes, x + 8, labelY,      '');
+            valueLabel = text(canvas.Axes, x + 8, labelY - 16, '');
 
-            item = TinySpice.UI.GraphicDevice(device, x, y, rotation, handles, nameLabel, valueLabel);
+            item = TinySpice.UI.GraphicDevice(device, x, y, angle, handles, nameLabel, valueLabel);
             item.updateLabels();
             canvas.Items{end + 1} = item;
         end
@@ -197,11 +205,11 @@ classdef (Sealed) Canvas < handle
             canvas.Items{end + 1} = TinySpice.UI.GraphicWire(x1, y1, x2, y2, handles);
         end
 
-        function placeGround(canvas, x, y, rotation)
+        function placeGround(canvas, x, y, angle)
             gnd          = TinySpice.Circuit.Ground();
             gnd.Position = [x, y];
-            handles      = gnd.draw(canvas.Axes, x, y, rotation);
-            canvas.Items{end + 1} = TinySpice.UI.GraphicGround(gnd, rotation, handles);
+            handles      = gnd.draw(canvas.Axes, x, y, angle);
+            canvas.Items{end + 1} = TinySpice.UI.GraphicGround(gnd, angle, handles);
         end
 
 

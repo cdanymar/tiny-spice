@@ -32,6 +32,9 @@ classdef CircuitSolver
                 [A, z] = dev.stamp(A, z, n1, n2, nodeCount, freq);
             end
 
+            disp(A);
+            disp(z);
+
             x              = A \ z;
             nodeVoltages   = x(1:nodeCount);
             branchCurrents = x(nodeCount + 1:end);

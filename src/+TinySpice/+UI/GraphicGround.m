@@ -9,9 +9,9 @@ classdef (Sealed) GraphicGround < handle
     end
 
     methods (Access = public)
-        function gg = GraphicGround(ground, rotation, handles)
+        function gg = GraphicGround(ground, angle, handles)
             gg.Ground   = ground;
-            gg.Rotation = rotation;
+            gg.Rotation = angle;
             gg.Handles  = handles;
         end
 

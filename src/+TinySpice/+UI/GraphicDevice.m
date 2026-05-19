@@ -14,11 +14,11 @@ classdef (Sealed) GraphicDevice < TinySpice.UI.CanvasGraphic
 
 
     methods (Access = public)
-        function graphicDevice = GraphicDevice(device, x, y, rotation, handles, nameLabel, valueLabel)
+        function graphicDevice = GraphicDevice(device, x, y, angle, handles, nameLabel, valueLabel)
             graphicDevice.Device     = device;
             graphicDevice.X          = x;
             graphicDevice.Y          = y;
-            graphicDevice.Rotation   = rotation;
+            graphicDevice.Rotation   = angle;
             graphicDevice.Handles    = handles;
             graphicDevice.NameLabel  = nameLabel;
             graphicDevice.ValueLabel = valueLabel;

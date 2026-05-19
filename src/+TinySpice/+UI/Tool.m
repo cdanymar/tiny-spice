@@ -10,9 +10,9 @@ classdef (Sealed) Tool
         Inductor        ('L', 'Place Inductor')
         VoltageSource   ('U', 'Place Voltage Source')
         CurrentSource   ('I', 'Place Current Source')
-        Wire            ('—', 'Place Wire')
+        Wire            ('-', 'Place Wire')
         Ground          ('G', 'Place Ground')
-        FreeRoam        ('✥', 'Free Roam')
+        FreeRoam        (' ', 'Free Roam')
     end
 
     methods (Access = private)
