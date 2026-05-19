@@ -1,0 +1,67 @@
+{
+    "devices": [
+        {
+            "type": "TinySpice.Circuit.CurrentSource",
+            "x": 240,
+            "y": 320,
+            "rotation": 0,
+            "name": "",
+            "value": 10
+        },
+        {
+            "type": "TinySpice.Circuit.Resistor",
+            "x": 340,
+            "y": 320,
+            "rotation": 90,
+            "name": "G_1",
+            "value": 80
+        },
+        {
+            "type": "TinySpice.Circuit.Resistor",
+            "x": 440,
+            "y": 320,
+            "rotation": 90,
+            "name": "G_2",
+            "value": 20
+        }
+    ],
+    "wires": [
+        {
+            "x1": 240,
+            "y1": 280,
+            "x2": 240,
+            "y2": 240
+        },
+        {
+            "x1": 240,
+            "y1": 280,
+            "x2": 340,
+            "y2": 280
+        },
+        {
+            "x1": 340,
+            "y1": 280,
+            "x2": 440,
+            "y2": 280
+        },
+        {
+            "x1": 440,
+            "y1": 360,
+            "x2": 340,
+            "y2": 360
+        },
+        {
+            "x1": 340,
+            "y1": 360,
+            "x2": 240,
+            "y2": 360
+        }
+    ],
+    "grounds": [
+        {
+            "x": 240,
+            "y": 240,
+            "rotation": 0
+        }
+    ]
+}

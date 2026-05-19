@@ -8,6 +8,18 @@ simulating electronic circuits. While professional versions like
 or [PSpice](https://www.ti.com/tool/PSPICE-FOR-TI) are massive, well-maintained and 
 feature-heavy, **Tiny SPICE** is a ~~useless~~ lightweight, educational project. 
 
+## Usage
+
+    matlab -nodesktop -nosplash -r "cd src; runApp"
+
+## Examples
+
+I included several circuit examples in the `examples` folder.
+1. Launch program
+2. Open a circuit json file (File > Open)
+3. Run AC analysis (Run > AC (HSS) Analysis)
+4. Enter desired frequency. I recommend 50 as the low frequency and 5,000,000 as the high.
+
 ## Main Algorithm
 
 The two main methods for electric circuit analysis (within EL1 and EL2) are the **Node 

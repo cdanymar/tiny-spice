@@ -1,0 +1,95 @@
+{
+    "devices": [
+        {
+            "type": "TinySpice.Circuit.VoltageSource",
+            "x": 180,
+            "y": 320,
+            "rotation": 0,
+            "name": "U",
+            "value": 220
+        },
+        {
+            "type": "TinySpice.Circuit.Inductor",
+            "x": 260,
+            "y": 360,
+            "rotation": 0,
+            "name": "L",
+            "value": 0.003
+        },
+        {
+            "type": "TinySpice.Circuit.Resistor",
+            "x": 380,
+            "y": 360,
+            "rotation": 0,
+            "name": "R",
+            "value": 200
+        },
+        {
+            "type": "TinySpice.Circuit.Capacitor",
+            "x": 460,
+            "y": 320,
+            "rotation": 90,
+            "name": "C",
+            "value": 5E-5
+        },
+        {
+            "type": "TinySpice.Circuit.Resistor",
+            "x": 580,
+            "y": 320,
+            "rotation": 90,
+            "name": "Load",
+            "value": 100
+        }
+    ],
+    "wires": [
+        {
+            "x1": 180,
+            "y1": 280,
+            "x2": 180,
+            "y2": 240
+        },
+        {
+            "x1": 180,
+            "y1": 280,
+            "x2": 460,
+            "y2": 280
+        },
+        {
+            "x1": 460,
+            "y1": 280,
+            "x2": 580,
+            "y2": 280
+        },
+        {
+            "x1": 580,
+            "y1": 360,
+            "x2": 460,
+            "y2": 360
+        },
+        {
+            "x1": 460,
+            "y1": 360,
+            "x2": 420,
+            "y2": 360
+        },
+        {
+            "x1": 340,
+            "y1": 360,
+            "x2": 300,
+            "y2": 360
+        },
+        {
+            "x1": 220,
+            "y1": 360,
+            "x2": 180,
+            "y2": 360
+        }
+    ],
+    "grounds": [
+        {
+            "x": 180,
+            "y": 240,
+            "rotation": 0
+        }
+    ]
+}
