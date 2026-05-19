@@ -68,8 +68,8 @@ classdef (Sealed) MainWindow < handle
 
         function onRunDC(mainWindow, source, event)
             try
-                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), eps);
-                TinySpice.UI.ResultsWindow(voltages, currents);
+                res = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), eps);
+                TinySpice.UI.ResultsWindow(res);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');
             end
@@ -84,8 +84,8 @@ classdef (Sealed) MainWindow < handle
                     error("For AC analysis frequency must a positve real number.");
                 end
 
-                [voltages, currents] = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), freq);
-                TinySpice.UI.ResultsWindow(voltages, currents);
+                res = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), freq);
+                TinySpice.UI.ResultsWindow(res);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');
             end
