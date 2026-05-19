@@ -62,27 +62,3 @@ $$
     \begin{bmatrix} -I \\ I \end{bmatrix}
 \end{array}
 $$
-
-#### Breaker
-
-**Closed state**
-
-$$
-\begin{array}{rcc}
-    & \begin{matrix} \text{in} & \text{out} & \text{k} \end{matrix} & \\
-    \begin{matrix} \text{in} \\ \text{out} \\ \text{k} \end{matrix} &
-    \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & -1 \\ 1 & -1 & 0 \end{bmatrix} &
-    \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
-\end{array}
-$$
-
-**Open state**
-
-$$
-\begin{array}{}
-    & \begin{matrix} \text{in} & \text{out} & \text{k} \end{matrix} & \\
-    \begin{matrix} \text{in} \\ \text{out} \\ \text{k} \end{matrix} &
-    \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} &
-    \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
-\end{array}
-$$
