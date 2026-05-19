@@ -38,10 +38,10 @@ classdef (Sealed) Canvas < handle
             statusBarHeight = 22;
             toolbarHeight = 24 + 2 * 2 + 2 * canvas.Margin;
 
-            x      = canvas.Margin;
-            y      = canvas.Margin;
-            width  = parent.Position(3) - 2 * canvas.Margin;
-            height = parent.Position(4) - toolbarHeight - 2 * canvas.Margin - statusBarHeight;
+            x      = -50;
+            y      = canvas.Margin - 10;
+            width  = parent.Position(3) + 100;
+            height = parent.Position(4) - 30;
 
             canvas.Axes = uiaxes(parent,                    ...
                 Position        = [x, y, width, height],    ...
