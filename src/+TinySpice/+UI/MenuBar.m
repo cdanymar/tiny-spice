@@ -1,12 +1,4 @@
 classdef (Sealed) MenuBar < handle
-    properties (Access = private)
-    end
-
-
-    properties (Access = public)
-    end
-
-
     methods (Access = public)
         function menuBar = MenuBar(parentWindow, runDCCallback, runACCallback)
             menuBar.createFileMenu(parentWindow);
@@ -24,9 +16,9 @@ classdef (Sealed) MenuBar < handle
             uimenu(fileMenu, Text = '&New',  Accelerator = 'N');
             uimenu(fileMenu, Text = '&Open', Accelerator = 'O');
             uimenu(fileMenu, Text = '&Save', Accelerator = 'S');
-            uimenu(fileMenu, Text = 'Save &As');
+            uimenu(fileMenu, Text = 'Save &As', Enable = false);
 
-            uimenu(fileMenu, Text = '&Exit', Separator = true);
+            uimenu(fileMenu, Text = '&Exit', Separator = true, MenuSelectedFcn = @(~, ~) close(parent));
         end
 
         function createEditMenu(menuBar, parent)
@@ -46,7 +38,7 @@ classdef (Sealed) MenuBar < handle
         function createHelpMenu(menuBar, parent)
             helpMenu = uimenu(parent, Text = '&Help');
 
-            uimenu(helpMenu, Text = '&About');
+            uimenu(helpMenu, Text = '&About', MenuSelectedFcn = @(~, ~) msgbox('This is a minimal linear sinusoidal harmonic steady state analyzer for aletrnating currnet circuits. Treat it as a prototype and do not expect much.', 'About tinySPICE'));
         end
     end
 end
