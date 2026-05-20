@@ -42,10 +42,13 @@ classdef (Sealed) MainWindow < handle
         end
 
         function createMenubar(mainWindow)
-            callbacks.new  = @(~,~) mainWindow.onFileNew();
-            callbacks.open = @(~,~) mainWindow.onFileOpen();
-            callbacks.save = @(~,~) mainWindow.onFileSave();
-            callbacks.run  = @(~,~) mainWindow.onRunAC();
+            callbacks.new   = @(~,~) mainWindow.onFileNew();
+            callbacks.open  = @(~,~) mainWindow.onFileOpen();
+            callbacks.save  = @(~,~) mainWindow.onFileSave();
+            callbacks.runDC = @(~,~) mainWindow.onRunDC();
+            callbacks.runAC = @(~,~) mainWindow.onRunAC();
+            callbacks.undo  = @(~,~) mainWindow.Canvas.undo();
+            callbacks.redo  = @(~,~) mainWindow.Canvas.redo();
 
             mainWindow.MenuBar = TinySpice.UI.MenuBar(mainWindow.Window, callbacks);
         end
@@ -69,7 +72,7 @@ classdef (Sealed) MainWindow < handle
 
         function onRunDC(mainWindow, source, event)
             try
-                res = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), eps);
+                res = TinySpice.Circuit.CircuitSolver.solve(mainWindow.Canvas.getItems(), 0);
                 TinySpice.UI.ResultsWindow(res);
             catch err
                 uialert(mainWindow.Window, err.message, 'Simulation Error');
@@ -98,7 +101,9 @@ classdef (Sealed) MainWindow < handle
 
         function onFileOpen(mainWindow)
             [file, path] = uigetfile('*.json', 'Open Circuit');
-            if isequal(file, 0); return; end
+            if isequal(file, 0)
+                return;
+            end
 
             try
                 raw  = fileread(fullfile(path, file));
@@ -111,7 +116,9 @@ classdef (Sealed) MainWindow < handle
 
         function onFileSave(mainWindow)
             [file, path] = uiputfile('*.json', 'Save Circuit');
-            if isequal(file, 0); return; end
+            if isequal(file, 0)
+                return;
+            end
 
             mainWindow.saveToFile(fullfile(path, file));
         end

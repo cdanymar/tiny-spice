@@ -68,6 +68,24 @@ classdef (Sealed) Canvas < handle
                 end
             end
         end
+
+        function undo(canvas)
+            if ~isempty(canvas.WireBegin)
+                delete(canvas.WireDot);
+                canvas.WireBegin = [];
+                canvas.WireDot   = [];
+                return;
+            end
+
+            if isempty(canvas.Items); return; end
+
+            canvas.Items{end}.undo();
+            canvas.Items(end) = [];
+        end
+
+        function redo(canvas)
+            % todo
+        end
     end
 
     methods (Access = private)
@@ -210,25 +228,6 @@ classdef (Sealed) Canvas < handle
             gnd.Position = [x, y];
             handles      = gnd.draw(canvas.Axes, x, y, angle);
             canvas.Items{end + 1} = TinySpice.UI.GraphicGround(gnd, angle, handles);
-        end
-
-
-        function undo(canvas)
-            if ~isempty(canvas.WireBegin)
-                delete(canvas.WireDot);
-                canvas.WireBegin = [];
-                canvas.WireDot   = [];
-                return;
-            end
-
-            if isempty(canvas.Items); return; end
-
-            canvas.Items{end}.undo();
-            canvas.Items(end) = [];
-        end
-
-        function redo(canvas)
-            % todo
         end
 
 

@@ -2,8 +2,8 @@ classdef (Sealed) MenuBar < handle
     methods (Access = public)
         function menuBar = MenuBar(parentWindow, callbacks)
             menuBar.createFileMenu(parentWindow, callbacks);
-            menuBar.createEditMenu(parentWindow);
-            menuBar.createRunMenu(parentWindow, callbacks.run);
+            menuBar.createEditMenu(parentWindow, callbacks);
+            menuBar.createRunMenu(parentWindow, callbacks);
             menuBar.createHelpMenu(parentWindow);
         end
     end
@@ -21,18 +21,18 @@ classdef (Sealed) MenuBar < handle
             uimenu(fileMenu, Text = '&Exit', Separator = true, MenuSelectedFcn = @(~, ~) delete(parent));
         end
 
-        function createEditMenu(menuBar, parent)
+        function createEditMenu(menuBar, parent, callbacks)
             runMenu = uimenu(parent, Text = '&Edit');
 
-            uimenu(runMenu, Text = '&Undo');
-            uimenu(runMenu, Text = '&Redo', Enable = false);
+            uimenu(runMenu, Text = '&Undo', MenuSelectedFcn = callbacks.undo);
+            uimenu(runMenu, Text = '&Redo', MenuSelectedFcn = callbacks.redo, Enable = false);
         end
 
-        function createRunMenu(menuBar, parent, runACCallback)
+        function createRunMenu(menuBar, parent, callbacks)
             runMenu = uimenu(parent, Text = '&Run');
 
-            uimenu(runMenu, Text = '&DC Analysis', Enable = false);
-            uimenu(runMenu, Text = '&AC (HSS) Analysis', MenuSelectedFcn = runACCallback);
+            uimenu(runMenu, Text = '&DC Analysis', MenuSelectedFcn = callbacks.runDC);
+            uimenu(runMenu, Text = '&AC (HSS) Analysis', MenuSelectedFcn = callbacks.runAC);
         end
 
         function createHelpMenu(menuBar, parent)
